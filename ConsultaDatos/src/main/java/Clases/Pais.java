@@ -23,14 +23,14 @@ public class Pais {
     private String capital;
     private String codPais; // ej; 'CHL'
     List<Ciudad> ciudades = new ArrayList<>();
-    List<String> idiomas = new ArrayList<>();
+    List<IdiomaPais> idiomas = new ArrayList<>();
 
 
     public Pais() {
     }
 
     public Pais(String nombre, String continente, String region, float superficie,int anioIndependencia, int poblacion, float expectLife, float pib,String gobierno, 
-                String jefeGobierno, String capital, String codPais,List<Ciudad> ciudades, List<String> idiomas)
+                String jefeGobierno, String capital, String codPais,List<Ciudad> ciudades, List<IdiomaPais> idiomas)
     {
         this.nombre = nombre;
         this.continente = continente;
@@ -154,11 +154,11 @@ public class Pais {
         this.ciudades = ciudades;
     }
 
-    public List<String> getIdiomas() {
+    public List<IdiomaPais> getIdiomas() {
         return idiomas;
     }
 
-    public void setIdiomas(List<String> idiomas) {
+    public void setIdiomas(List<IdiomaPais> idiomas) {
         this.idiomas = idiomas;
     }
 

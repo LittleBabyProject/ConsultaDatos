@@ -28,21 +28,190 @@ public class Vistas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLayeredPane1 = new javax.swing.JLayeredPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLayeredPane2 = new javax.swing.JLayeredPane();
+        lblTitulo = new javax.swing.JLabel();
+        lblCodigo = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblContinente = new javax.swing.JLabel();
+        lblPoblacion = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtContinente = new javax.swing.JTextField();
+        txtPoblacion = new javax.swing.JTextField();
+        bttnConsultar = new javax.swing.JButton();
+        bttnModificar = new javax.swing.JButton();
+        bttnAgregar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(720, 300));
+        setPreferredSize(new java.awt.Dimension(700, 245));
+
+        jLayeredPane1.setPreferredSize(new java.awt.Dimension(430, 288));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Codigo", "Nombre", "Continente", "Poblacion"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jLayeredPane1.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
+        jLayeredPane1.setLayout(jLayeredPane1Layout);
+        jLayeredPane1Layout.setHorizontalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+        );
+        jLayeredPane1Layout.setVerticalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+
+        jLayeredPane2.setPreferredSize(new java.awt.Dimension(250, 288));
+
+        lblTitulo.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("Registro poblacional internacional");
+
+        lblCodigo.setText("Codigo");
+
+        lblNombre.setText("Nombre");
+
+        lblContinente.setText("Continente");
+
+        lblPoblacion.setText("Poblacion");
+
+        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoActionPerformed(evt);
+            }
+        });
+
+        bttnConsultar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        bttnConsultar.setText("Consulta");
+        bttnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnConsultarActionPerformed(evt);
+            }
+        });
+
+        bttnModificar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        bttnModificar.setText("Modificar");
+
+        bttnAgregar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        bttnAgregar.setText("Agregar");
+
+        jLayeredPane2.setLayer(lblTitulo, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblCodigo, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblNombre, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblContinente, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblPoblacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtCodigo, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtNombre, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtContinente, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtPoblacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(bttnConsultar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(bttnModificar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(bttnAgregar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
+        jLayeredPane2.setLayout(jLayeredPane2Layout);
+        jLayeredPane2Layout.setHorizontalGroup(
+            jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblContinente, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(lblPoblacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCodigo)
+                    .addComponent(txtNombre)
+                    .addComponent(txtContinente)
+                    .addComponent(txtPoblacion)))
+            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                        .addGap(0, 2, Short.MAX_VALUE)
+                        .addComponent(bttnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bttnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bttnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jLayeredPane2Layout.setVerticalGroup(
+            jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo)
+                .addGap(25, 25, 25)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCodigo)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombre)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblContinente)
+                    .addComponent(txtContinente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPoblacion)
+                    .addComponent(txtPoblacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bttnConsultar)
+                    .addComponent(bttnModificar)
+                    .addComponent(bttnAgregar)))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                    .addComponent(jLayeredPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoActionPerformed
+
+    private void bttnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnConsultarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bttnConsultarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +239,21 @@ public class Vistas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bttnAgregar;
+    private javax.swing.JButton bttnConsultar;
+    private javax.swing.JButton bttnModificar;
+    private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JLayeredPane jLayeredPane2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblContinente;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPoblacion;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtContinente;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPoblacion;
     // End of variables declaration//GEN-END:variables
 }
