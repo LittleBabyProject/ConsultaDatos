@@ -232,6 +232,7 @@
         <Component class="javax.swing.JTextField" name="txtCodigo">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCodigoActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCodigoKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNombre">
@@ -239,6 +240,9 @@
         <Component class="javax.swing.JTextField" name="txtContinente">
         </Component>
         <Component class="javax.swing.JTextField" name="txtPoblacion">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPoblacionActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bttnConsultar">
           <Properties>
@@ -266,6 +270,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Agregar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bttnAgregarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
