@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vistas;
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author aacev
@@ -11,12 +13,16 @@ package Vistas;
 public class Vistas extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vistas.class.getName());
-
+    private DefaultTableModel tabla;
+    private Object[] objeto = new Object[4];
     /**
      * Creates new form Vistas
      */
+    
     public Vistas() {
         initComponents();
+        tabla = (DefaultTableModel) jTable1.getModel();
+        
     }
 
     /**
@@ -96,6 +102,17 @@ public class Vistas extends javax.swing.JFrame {
                 txtCodigoActionPerformed(evt);
             }
         });
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyTyped(evt);
+            }
+        });
+
+        txtPoblacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPoblacionActionPerformed(evt);
+            }
+        });
 
         bttnConsultar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         bttnConsultar.setText("Consulta");
@@ -110,6 +127,11 @@ public class Vistas extends javax.swing.JFrame {
 
         bttnAgregar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         bttnAgregar.setText("Agregar");
+        bttnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnAgregarActionPerformed(evt);
+            }
+        });
 
         jLayeredPane2.setLayer(lblTitulo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(lblCodigo, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -212,6 +234,25 @@ public class Vistas extends javax.swing.JFrame {
     private void bttnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnConsultarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bttnConsultarActionPerformed
+
+    private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
+        // TODO add your handling code here:
+        System.out.println("" + evt.getKeyChar());
+    }//GEN-LAST:event_txtCodigoKeyTyped
+
+    private void bttnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAgregarActionPerformed
+        String stringPoblacion = txtPoblacion.getText();
+        int poblacion = Integer.parseInt(stringPoblacion);                  //falta hacer el try y catch para evitar errores
+        objeto[0] = txtCodigo.getText();
+        objeto[1] = txtNombre.getText();
+        objeto[2] = txtContinente.getText();
+        objeto[3] = poblacion;
+        tabla.addRow(objeto);
+    }//GEN-LAST:event_bttnAgregarActionPerformed
+
+    private void txtPoblacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPoblacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPoblacionActionPerformed
 
     /**
      * @param args the command line arguments
