@@ -13,10 +13,17 @@ import javax.swing.table.DefaultTableModel;
 public class VistaPais extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPais.class.getName());
+<<<<<<< Updated upstream
     private DefaultTableModel tabla;
     private Object[] objeto = new Object[6];
     
     
+=======
+
+    /**
+     * Creates new form Vistas
+     */
+>>>>>>> Stashed changes
     public VistaPais() {
         initComponents();
         tabla = (DefaultTableModel) jTable1.getModel();
