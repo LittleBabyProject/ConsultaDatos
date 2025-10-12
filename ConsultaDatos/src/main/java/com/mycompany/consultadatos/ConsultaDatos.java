@@ -7,19 +7,21 @@ import java.util.ArrayList;
 import Clases.*;
 import java.util.List;
 import Vistas.VistaLogin;
+import java.util.LinkedHashMap;
+import java.util.Map;
 /**
  *
  * @author aacev
  */
 public class ConsultaDatos {
-    
     public static Usuario admin;
-
+    public static Map<Integer, Usuario> listaUsuarios = new LinkedHashMap<>();
+    
     public static void main(String[] args) {
-        // Objeto solo de prueba
-        admin = new Usuario(0, "Admin", "Admin123", "Admin");
+        admin = new Usuario(1, "Admin", "Admin123", "Admin");
+        listaUsuarios.put(admin.getId(), admin);
         
-        VistaLogin login = new VistaLogin(admin);
+        VistaLogin login = new VistaLogin(admin, listaUsuarios);
         login.setVisible(true);
     }
 }

@@ -5,6 +5,9 @@
 package Vistas;
 
 import Clases.Usuario;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,10 +22,12 @@ public class VistaLogin extends javax.swing.JFrame {
      * Creates new form VistaLogin
      */
     private Usuario admin;
+    private Map<Integer, Usuario> listaUsuarios;
     
-    public VistaLogin(Usuario admin) {
-        this.admin = admin;
+    public VistaLogin(Usuario admin, Map<Integer, Usuario> listaUsuarios) {
         initComponents();
+        this.admin = admin;
+        this.listaUsuarios = listaUsuarios;
     }
 
     
@@ -162,10 +167,22 @@ public class VistaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreUsuarioActionPerformed
 
     private void bttnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnRegistrarActionPerformed
-        // TODO add your handling code here:
+        
+        if (txtNombreUsuario.getText().isEmpty() || txtContraseñaUsuario.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, rellenar los campos faltantes", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String registrarNombre = txtNombreUsuario.getText();
+            String registrarContraseña = txtContraseñaUsuario.getText();
+            int nuevoId = listaUsuarios.size() + 1;
+            Usuario nuevoUsuario = new Usuario(nuevoId, registrarNombre, registrarContraseña, "Usuario");
+            listaUsuarios.put(nuevoId, nuevoUsuario);
+            JOptionPane.showMessageDialog(null, "El usuario " + registrarNombre + " se registro con exito", "Usuario registrado", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bttnRegistrarActionPerformed
 
     private void bttnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnLoginActionPerformed
+        
         if(txtNombreUsuario.getText().equals(this.admin.getNombre()) && txtContraseñaUsuario.getText().equals(this.admin.getContraseña())) {
             VistaMenu vistaMenu = new VistaMenu();
             vistaMenu.setVisible(true);
@@ -173,7 +190,7 @@ public class VistaLogin extends javax.swing.JFrame {
         else {
             JOptionPane.showMessageDialog(null, "Datos no encontrados", "Error de datos", JOptionPane.ERROR_MESSAGE);
         }
-
+    
     }//GEN-LAST:event_bttnLoginActionPerformed
 
 
@@ -189,3 +206,4 @@ public class VistaLogin extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombreUsuario;
     // End of variables declaration//GEN-END:variables
 }
+
