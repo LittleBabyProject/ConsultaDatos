@@ -3,12 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vistas;
-
+import Clases.Pais;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author aacev
  */
 public class VistaMenu extends javax.swing.JFrame {
+    
+    private List<Pais> listaMaestraDePaises;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaMenu.class.getName());
 
@@ -17,6 +21,19 @@ public class VistaMenu extends javax.swing.JFrame {
      */
     public VistaMenu() {
         initComponents();
+        setLocationRelativeTo(null);
+        cargarDatosDePrueba();
+    }
+    // 4. AÑADE ESTE MÉTODO COMPLETO PARA CREAR Y LLENAR LA LISTA
+    private void cargarDatosDePrueba() {
+        
+        this.listaMaestraDePaises = new ArrayList<>();
+        
+        this.listaMaestraDePaises.add(new Pais("Chile", "South America", "South America", 756102.0f, 1810, 19116201, 80.5f, 258.5f, "Republic", "Gabriel Boric", "Santiago", "CHL"));
+        this.listaMaestraDePaises.add(new Pais("Argentina", "South America", "South America", 2780400.0f, 1816, 45376763, 76.7f, 383.1f, "Republic", "Javier Milei", "Buenos Aires", "ARG"));
+        this.listaMaestraDePaises.add(new Pais("Japón", "Asia", "Eastern Asia", 377975.0f, -660, 125507472, 84.5f, 5065.0f, "Constitutional Monarchy", "Fumio Kishida", "Tokyo", "JPN"));
+        
+        System.out.println("Lista de paises creada. Total: " + this.listaMaestraDePaises.size() + " paises.");
     }
 
     /**
@@ -146,11 +163,15 @@ public class VistaMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_bttnControlDeUsuarioActionPerformed
 
     private void bttnPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnPaisActionPerformed
-        // TODO add your handling code here:
+
+        VistaPais vistaPais = new VistaPais(this.listaMaestraDePaises);
+        vistaPais.setVisible(true);
     }//GEN-LAST:event_bttnPaisActionPerformed
 
     private void bttnCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnCiudadActionPerformed
-        // TODO add your handling code here:
+            
+            VistaCiudad vistaCiudad = new VistaCiudad(this.listaMaestraDePaises);
+            vistaCiudad.setVisible(true);
     }//GEN-LAST:event_bttnCiudadActionPerformed
 
     /**
