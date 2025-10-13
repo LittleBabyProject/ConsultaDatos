@@ -10,20 +10,20 @@ import java.util.List;
  * @author Santo Tomas
  */
 public class Pais {
-    private String nombre;
-    private String continente;
-    private String region;
-    private float superficie;                                   // al utilizar float se tiene que especificar ej 12.4f
+    private String nombre; 
+    private String continente; 
+    private String region; 
+    private float superficie;                                  // al utilizar float se tiene que especificar ej 12.4f
     private int anioIndependencia;
-    private int poblacion;
-    private float expectLife;
-    private float pib;
-    private String gobierno;
-    private String jefeGobierno;
-    private String capital;
-    private String codPais; // ej; 'CHL'
-    List<Ciudad> ciudades = new ArrayList<>();
-    List<IdiomaPais> idiomas = new ArrayList<>();
+    private int poblacion; 
+    private float expectLife; 
+    private float pib;  
+    private String gobierno; 
+    private String jefeGobierno; 
+    private String capital; 
+    private String codPais; // ej; 'CHL' 
+    List<Ciudad> ciudades = new ArrayList<>(); 
+    List<IdiomaPais> idiomas = new ArrayList<>(); 
 
 
     public Pais() {
@@ -48,7 +48,25 @@ public class Pais {
         this.idiomas = idiomas;
     }
 
+    public Pais(String nombre, String continente, String region, float superficie, int anioIndependencia, int poblacion, float expectLife, float pib, String gobierno,
+                String jefeGobierno, String capital, String codPais)
+    {
+        this.nombre = nombre;
+        this.continente = continente;
+        this.region = region;
+        this.superficie = superficie;
+        this.anioIndependencia = anioIndependencia;
+        this.poblacion = poblacion;
+        this.expectLife = expectLife;
+        this.pib = pib;
+        this.gobierno = gobierno;
+        this.jefeGobierno = jefeGobierno;
+        this.capital = capital;
+        this.codPais = codPais;
 
+        this.ciudades = new ArrayList<>();             //Constructor con las listas ya establecidas para que no tire error
+        this.idiomas = new ArrayList<>();
+    }
 
     public String getNombre() {
         return nombre;

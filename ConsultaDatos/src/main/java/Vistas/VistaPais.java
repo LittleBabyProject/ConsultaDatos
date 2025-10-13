@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vistas;
+import Clases.Pais;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -12,10 +13,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VistaPais extends javax.swing.JFrame {
     
+    private List<Pais> listaPaisesRecibida;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPais.class.getName());
 
     private DefaultTableModel tabla;
-    private Object[] objeto = new Object[6];
+    private Object[] objeto = new Object[6];    //se crea la tabla con un tamaño maximo de 6
     
     
 
@@ -31,11 +34,26 @@ public class VistaPais extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
+    
+    public VistaPais(List<Pais> paises) {
+        initComponents();
+        tabla = (DefaultTableModel) jTable1.getModel();
+        tabla.setRowCount(0);
+        setLocationRelativeTo(null);
+        
+        
+        this.listaPaisesRecibida = paises;
+        
+        
+        System.out.println("VistaPais recibió la lista. Total: " + this.listaPaisesRecibida.size() + " países.");
+        
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -45,21 +63,37 @@ public class VistaPais extends javax.swing.JFrame {
         lblNombre = new javax.swing.JLabel();
         lblContinente = new javax.swing.JLabel();
         lblPoblacion = new javax.swing.JLabel();
+        lblIdioma = new javax.swing.JLabel();
+        lblCapital = new javax.swing.JLabel();
+        lblRegion = new javax.swing.JLabel();
+        lblSuperficie = new javax.swing.JLabel();
+        lblIndependencia = new javax.swing.JLabel();
+        lblExpectLife = new javax.swing.JLabel();
+        lblPIB = new javax.swing.JLabel();
+        lblGobierno = new javax.swing.JLabel();
+        lblJefeGobierno = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         txtContinente = new javax.swing.JTextField();
         txtPoblacion = new javax.swing.JTextField();
-        lblIdioma = new javax.swing.JLabel();
         txtIdioma = new javax.swing.JTextField();
-        lblCapital = new javax.swing.JLabel();
         txtCapital = new javax.swing.JTextField();
+        txtRegion = new javax.swing.JTextField();
+        txtSuperficie = new javax.swing.JTextField();
+        txtIndependencia = new javax.swing.JTextField();
+        txtExpectLife = new javax.swing.JTextField();
+        txtPIB = new javax.swing.JTextField();
+        txtGobierno = new javax.swing.JTextField();
+        txtJefeGobierno = new javax.swing.JTextField();
         bttnAgregar = new javax.swing.JButton();
         bttnConsultar = new javax.swing.JButton();
         bttnModificar = new javax.swing.JButton();
 
+        jLabel1.setText("jLabel1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(720, 300));
-        setPreferredSize(new java.awt.Dimension(790, 390));
+        setPreferredSize(new java.awt.Dimension(1000, 600));
 
         jLayeredPane1.setPreferredSize(new java.awt.Dimension(430, 288));
 
@@ -90,11 +124,11 @@ public class VistaPais extends javax.swing.JFrame {
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
         );
 
         jLayeredPane2.setPreferredSize(new java.awt.Dimension(250, 288));
@@ -110,6 +144,24 @@ public class VistaPais extends javax.swing.JFrame {
         lblContinente.setText("Continente");
 
         lblPoblacion.setText("Poblacion");
+
+        lblIdioma.setText("Idioma");
+
+        lblCapital.setText("Capital");
+
+        lblRegion.setText("Region");
+
+        lblSuperficie.setText("Superficie");
+
+        lblIndependencia.setText("Año Independecia");
+
+        lblExpectLife.setText("Expectativa de vida");
+
+        lblPIB.setText("PIB");
+
+        lblGobierno.setText("Gobierno");
+
+        lblJefeGobierno.setText("Jefe de Gobierno");
 
         txtCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,15 +180,11 @@ public class VistaPais extends javax.swing.JFrame {
             }
         });
 
-        lblIdioma.setText("Idioma");
-
         txtIdioma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIdiomaActionPerformed(evt);
             }
         });
-
-        lblCapital.setText("Capital");
 
         txtCapital.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,14 +197,28 @@ public class VistaPais extends javax.swing.JFrame {
         jLayeredPane2.setLayer(lblNombre, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(lblContinente, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(lblPoblacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblIdioma, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblCapital, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblRegion, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblSuperficie, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblIndependencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblExpectLife, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblPIB, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblGobierno, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(lblJefeGobierno, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(txtCodigo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(txtNombre, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(txtContinente, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(txtPoblacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(lblIdioma, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(txtIdioma, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(lblCapital, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(txtCapital, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtRegion, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtSuperficie, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtIndependencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtExpectLife, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtPIB, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtGobierno, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtJefeGobierno, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
         jLayeredPane2.setLayout(jLayeredPane2Layout);
@@ -174,7 +236,9 @@ public class VistaPais extends javax.swing.JFrame {
                         .addComponent(lblContinente, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                         .addComponent(lblPoblacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(lblIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCapital))
+                    .addComponent(lblCapital)
+                    .addComponent(lblRegion)
+                    .addComponent(lblSuperficie))
                 .addGap(18, 18, 18)
                 .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtNombre)
@@ -182,7 +246,29 @@ public class VistaPais extends javax.swing.JFrame {
                     .addComponent(txtPoblacion)
                     .addComponent(txtIdioma)
                     .addComponent(txtCapital)
-                    .addComponent(txtCodigo)))
+                    .addComponent(txtCodigo)
+                    .addComponent(txtRegion)
+                    .addComponent(txtSuperficie)))
+            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblIndependencia)
+                    .addComponent(lblExpectLife))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtIndependencia)
+                    .addComponent(txtExpectLife)))
+            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPIB)
+                    .addComponent(lblGobierno))
+                .addGap(33, 33, 33)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPIB)
+                    .addComponent(txtGobierno)))
+            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                .addComponent(lblJefeGobierno)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtJefeGobierno))
         );
         jLayeredPane2Layout.setVerticalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,7 +299,35 @@ public class VistaPais extends javax.swing.JFrame {
                 .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCapital)
                     .addComponent(txtCapital, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRegion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRegion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSuperficie)
+                    .addComponent(txtSuperficie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtIndependencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblIndependencia))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblExpectLife)
+                    .addComponent(txtExpectLife, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPIB)
+                    .addComponent(txtPIB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblGobierno)
+                    .addComponent(txtGobierno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblJefeGobierno)
+                    .addComponent(txtJefeGobierno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         bttnAgregar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
@@ -248,7 +362,7 @@ public class VistaPais extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
@@ -263,10 +377,12 @@ public class VistaPais extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-                    .addComponent(jLayeredPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLayeredPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bttnAgregar)
                     .addComponent(bttnConsultar)
@@ -300,22 +416,60 @@ public class VistaPais extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void bttnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAgregarActionPerformed
-        String stringPoblacion = txtPoblacion.getText();
-        int poblacion = Integer.parseInt(stringPoblacion);                  //falta hacer el try y catch para evitar errores
-        objeto[0] = txtCodigo.getText();
-        objeto[1] = txtNombre.getText();
-        objeto[2] = txtContinente.getText();
-        objeto[3] = poblacion;
-        objeto[4] = txtIdioma.getText();
-        objeto[5] = txtCapital.getText();
-        tabla.addRow(objeto);
+    
+    if (txtCodigo.getText().isEmpty() || txtNombre.getText().isEmpty() || txtContinente.getText().isEmpty() || txtPoblacion.getText().isEmpty() || txtCapital.getText().isEmpty() || txtRegion.getText().isEmpty() || txtSuperficie.getText().isEmpty() || txtIndependencia.getText().isEmpty() || txtExpectLife.getText().isEmpty() || txtPIB.getText().isEmpty() || txtGobierno.getText().isEmpty() || txtJefeGobierno.getText().isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Campos incompletos", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return; // Detiene la ejecución si un campo está vacío
+    }
+
+    try {
         
+        String nombre = txtNombre.getText();
+        String continente = txtContinente.getText();
+        String region = txtRegion.getText();
+        float superficie = Float.parseFloat(txtSuperficie.getText());
+        int anioIndependencia = Integer.parseInt(txtIndependencia.getText());
+        int poblacion = Integer.parseInt(txtPoblacion.getText());
+        float expectLife = Float.parseFloat(txtExpectLife.getText());
+        float pib = Float.parseFloat(txtPIB.getText());
+        String gobierno = txtGobierno.getText();
+        String jefeGobierno = txtJefeGobierno.getText();
+        String capital = txtCapital.getText();
+        String codigo = txtCodigo.getText();
+        
+        Pais nuevoPais = new Pais(nombre, continente, region, superficie, anioIndependencia, poblacion, expectLife, pib, gobierno, jefeGobierno, capital, codigo);
+        this.listaPaisesRecibida.add(nuevoPais);
+       
+        objeto[0] = nuevoPais.getCodPais();
+        objeto[1] = nuevoPais.getNombre();
+        objeto[2] = nuevoPais.getContinente();
+        objeto[3] = nuevoPais.getPoblacion();
+        objeto[4] = ""; // Falta crear las listas de idiomas
+        objeto[5] = nuevoPais.getCapital();
+        tabla.addRow(objeto);
+
         txtCodigo.setText("");
-        txtNombre.setText("");                                      // se limpian los campos
+        txtNombre.setText("");
         txtContinente.setText("");
         txtPoblacion.setText("");
-        txtIdioma.setText("");
+        txtIdioma.setText("");      //yo crearia una comboBox para elegir diferentes idiomas.
         txtCapital.setText("");
+        txtRegion.setText("");
+        txtSuperficie.setText("");
+        txtIndependencia.setText("");
+        txtExpectLife.setText("");
+        txtPIB.setText("");
+        txtGobierno.setText("");
+        txtJefeGobierno.setText("");
+        javax.swing.JOptionPane.showMessageDialog(this, "Pais '" + nombre + "' agregado correctamente.", "Exito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        
+
+        System.out.println("Pais agregado. Total en la lista main: " + this.listaPaisesRecibida.size());
+
+    } catch (NumberFormatException e) {
+        // Manejo de error si el usuario escribe texto en el campo de poblacion y faltaria para las otras condiciones
+        javax.swing.JOptionPane.showMessageDialog(this, "El valor de la población debe ser un número válido.", "Error de Formato", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_bttnAgregarActionPerformed
 
     private void txtPoblacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPoblacionActionPerformed
@@ -380,6 +534,7 @@ public class VistaPais extends javax.swing.JFrame {
     private javax.swing.JButton bttnAgregar;
     private javax.swing.JButton bttnConsultar;
     private javax.swing.JButton bttnModificar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -387,15 +542,29 @@ public class VistaPais extends javax.swing.JFrame {
     private javax.swing.JLabel lblCapital;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblContinente;
+    private javax.swing.JLabel lblExpectLife;
+    private javax.swing.JLabel lblGobierno;
     private javax.swing.JLabel lblIdioma;
+    private javax.swing.JLabel lblIndependencia;
+    private javax.swing.JLabel lblJefeGobierno;
     private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPIB;
     private javax.swing.JLabel lblPoblacion;
+    private javax.swing.JLabel lblRegion;
+    private javax.swing.JLabel lblSuperficie;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTextField txtCapital;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtContinente;
+    private javax.swing.JTextField txtExpectLife;
+    private javax.swing.JTextField txtGobierno;
     private javax.swing.JTextField txtIdioma;
+    private javax.swing.JTextField txtIndependencia;
+    private javax.swing.JTextField txtJefeGobierno;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPIB;
     private javax.swing.JTextField txtPoblacion;
+    private javax.swing.JTextField txtRegion;
+    private javax.swing.JTextField txtSuperficie;
     // End of variables declaration//GEN-END:variables
 }

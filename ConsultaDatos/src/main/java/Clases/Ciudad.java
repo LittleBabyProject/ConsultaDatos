@@ -23,6 +23,9 @@ public class Ciudad {
         this.distrito = distrito;
         this.problacion = problacion;
     }
+    
+    
+    
 
     public String getNombre() {
         return nombre;
