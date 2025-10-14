@@ -180,6 +180,9 @@ public class Pais {
         this.idiomas = idiomas;
     }
 
-   
+    @Override
+    public String toString() {
+        return this.nombre;
+    }  
     
 }

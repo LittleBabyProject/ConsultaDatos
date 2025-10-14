@@ -99,6 +99,11 @@ public class VistaMenu extends javax.swing.JFrame {
         });
 
         bttnIdioma.setText("Idioma");
+        bttnIdioma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnIdiomaActionPerformed(evt);
+            }
+        });
 
         jLayeredPane1.setLayer(lblConsultaDeDatos, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(bttnPais, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -169,10 +174,14 @@ public class VistaMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_bttnPaisActionPerformed
 
     private void bttnCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnCiudadActionPerformed
-            
-            VistaCiudad vistaCiudad = new VistaCiudad(this.listaMaestraDePaises);
-            vistaCiudad.setVisible(true);
+        VistaCiudad vistaCiudad = new VistaCiudad(this.listaMaestraDePaises);
+        vistaCiudad.setVisible(true);
     }//GEN-LAST:event_bttnCiudadActionPerformed
+
+    private void bttnIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnIdiomaActionPerformed
+        VistaIdioma vistaIdioma = new VistaIdioma(this.listaMaestraDePaises);
+        vistaIdioma.setVisible(true);
+    }//GEN-LAST:event_bttnIdiomaActionPerformed
 
     /**
      * @param args the command line arguments
