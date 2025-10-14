@@ -8,13 +8,14 @@ import Clases.Pais;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author guerr
  */
 public class VistaCiudad extends javax.swing.JFrame {
     private List<Pais> listaPaisesRecibida;
-    
+    private DefaultTableModel tablaCiudadesModel;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaCiudad.class.getName());
 
     /**
@@ -29,14 +30,46 @@ public class VistaCiudad extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.listaPaisesRecibida = paises;
         
+        configurarModeloTabla();
         cargarPaisesEnComboBox();
     }
+    
+    private void configurarModeloTabla() {
+        tablaCiudadesModel = (DefaultTableModel) jTable1.getModel();
+        tablaCiudadesModel.setColumnCount(0);
+        tablaCiudadesModel.addColumn("Nombre");
+        tablaCiudadesModel.addColumn("Distrito");
+        tablaCiudadesModel.addColumn("Población");
+    }   
+    
     private void cargarPaisesEnComboBox() {
         DefaultComboBoxModel<Pais> modelo = new DefaultComboBoxModel<>();
         for (Pais p : this.listaPaisesRecibida) {
-            modelo.addElement(p); // (Recuerda añadir el método toString() a tu clase Pais)
+            modelo.addElement(p);
         }
         jbPaises.setModel(modelo); 
+    }
+    private void actualizarTablaCiudades() {
+        // 1. Limpia todas las filas existentes en la tabla
+        tablaCiudadesModel.setRowCount(0);
+        
+        // 2. Obtiene el país que está seleccionado en el ComboBox
+        Pais paisSeleccionado = (Pais) jbPaises.getSelectedItem();
+        
+        // 3. Si hay un país seleccionado y tiene ciudades...
+        if (paisSeleccionado != null && paisSeleccionado.getCiudades() != null) {
+            // 4. Recorre la lista de ciudades de ese país
+            for (Ciudad c : paisSeleccionado.getCiudades()) {
+                // 5. Crea una fila con los datos de cada ciudad
+                Object[] fila = {
+                    c.getNombre(),
+                    c.getDistrito(),
+                    c.getProblacion()
+                };
+                // 6. Añade la fila a la tabla
+                tablaCiudadesModel.addRow(fila);
+            }
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,6 +89,8 @@ public class VistaCiudad extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtPoblacion = new javax.swing.JTextField();
         jbPaises = new javax.swing.JComboBox<>();
+        BtnnAgregar = new javax.swing.JButton();
+        BtnnEditar = new javax.swing.JButton();
         jLayeredPane2 = new javax.swing.JLayeredPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -76,6 +111,26 @@ public class VistaCiudad extends javax.swing.JFrame {
 
         jLabel2.setText("Poblacion");
 
+        jbPaises.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbPaisesActionPerformed(evt);
+            }
+        });
+
+        BtnnAgregar.setText("Agregar");
+        BtnnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnnAgregarActionPerformed(evt);
+            }
+        });
+
+        BtnnEditar.setText("Editar");
+        BtnnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnnEditarActionPerformed(evt);
+            }
+        });
+
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(lbNombre, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(txtNombre, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -84,6 +139,8 @@ public class VistaCiudad extends javax.swing.JFrame {
         jLayeredPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(txtPoblacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jbPaises, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(BtnnAgregar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(BtnnEditar, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -92,16 +149,24 @@ public class VistaCiudad extends javax.swing.JFrame {
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbNombre)
-                    .addComponent(lbDistrito)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDistrito, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                    .addComponent(txtNombre)
-                    .addComponent(txtPoblacion)
-                    .addComponent(jbPaises, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbNombre)
+                            .addComponent(lbDistrito)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDistrito, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                            .addComponent(txtNombre)
+                            .addComponent(txtPoblacion)
+                            .addComponent(jbPaises, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(BtnnAgregar)
+                        .addGap(18, 18, 18)
+                        .addComponent(BtnnEditar)
+                        .addContainerGap())))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,7 +187,11 @@ public class VistaCiudad extends javax.swing.JFrame {
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtPoblacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnnAgregar)
+                    .addComponent(BtnnEditar))
+                .addGap(19, 19, 19))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -184,6 +253,44 @@ public class VistaCiudad extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
 
+    private void BtnnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnnAgregarActionPerformed
+        Pais paisSeleccionado = (Pais) jbPaises.getSelectedItem();
+    
+        if (paisSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un pais", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (txtNombre.getText().isEmpty() || txtDistrito.getText().isEmpty() || txtPoblacion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos de la ciudad.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            String nombreCiudad = txtNombre.getText();
+            String distrito = txtDistrito.getText();
+            int poblacion = Integer.parseInt(txtPoblacion.getText());
+
+            Ciudad nuevaCiudad = new Ciudad(nombreCiudad, paisSeleccionado.getNombre(), distrito, poblacion);
+            paisSeleccionado.getCiudades().add(nuevaCiudad);
+            txtNombre.setText("");
+            txtDistrito.setText("");
+            txtPoblacion.setText("");
+            JOptionPane.showMessageDialog(this, "Ciudad '" + nombreCiudad + "' agregada a " + paisSeleccionado.getNombre() + " exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            System.out.println("Ciudades en " + paisSeleccionado.getNombre() + ": " + paisSeleccionado.getCiudades().size());
+            actualizarTablaCiudades();
+    } catch (NumberFormatException e) { //catch por si ingresa texto
+        JOptionPane.showMessageDialog(this, "La población debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_BtnnAgregarActionPerformed
+
+    private void BtnnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnnEditarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnnEditarActionPerformed
+
+    private void jbPaisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPaisesActionPerformed
+        actualizarTablaCiudades();
+    }//GEN-LAST:event_jbPaisesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -210,6 +317,8 @@ public class VistaCiudad extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnnAgregar;
+    private javax.swing.JButton BtnnEditar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLayeredPane jLayeredPane1;

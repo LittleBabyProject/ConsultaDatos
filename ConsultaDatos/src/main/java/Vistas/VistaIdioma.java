@@ -4,12 +4,19 @@
  */
 package Vistas;
 
+import Clases.IdiomaPais;
+import Clases.Pais;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author guerr
  */
 public class VistaIdioma extends javax.swing.JFrame {
-    
+    private List<Pais> listaPaisesRecibida;
+    private DefaultTableModel tablaIdiomasModel;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaIdioma.class.getName());
 
     /**
@@ -18,7 +25,49 @@ public class VistaIdioma extends javax.swing.JFrame {
     public VistaIdioma() {
         initComponents();
     }
+    
+    public VistaIdioma(List<Pais> paises) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        this.listaPaisesRecibida = paises;
+        
+        configurarModeloTabla();
+        cargarPaisesEnComboBox();
+    }
+
+    private void configurarModeloTabla() {
+        tablaIdiomasModel = (DefaultTableModel) jTable1.getModel();
+        tablaIdiomasModel.setColumnCount(0);
+        tablaIdiomasModel.addColumn("Idioma");
+        tablaIdiomasModel.addColumn("Porcentaje Hablantes");
+        tablaIdiomasModel.addColumn("Es Oficial");
+    }
+
+    private void cargarPaisesEnComboBox() {
+        DefaultComboBoxModel<Pais> modelo = new DefaultComboBoxModel<>();
+        for (Pais p : this.listaPaisesRecibida) {
+            modelo.addElement(p);
+        }
+        cbPaises.setModel(modelo);
+        actualizarTablaIdiomas();
+    }
+    
+    private void actualizarTablaIdiomas() {
+        tablaIdiomasModel.setRowCount(0);
+        Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
+        if (paisSeleccionado != null && paisSeleccionado.getIdiomas() != null) {
+            for (IdiomaPais idioma : paisSeleccionado.getIdiomas()) {
+                Object[] fila = {
+                    idioma.getIdioma(),
+                    idioma.getPorcentajeHablante(),
+                    idioma.isEsOficial() ? "Sí" : "No"
+                };
+                tablaIdiomasModel.addRow(fila);
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,14 +83,16 @@ public class VistaIdioma extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
         txtIdioma = new javax.swing.JTextField();
         lblIdioma = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtPorcentaje = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         cbPaises = new javax.swing.JComboBox<>();
         lbPais = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        RbOficial = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
+        BtnnAgregar = new javax.swing.JButton();
+        BtnnEditar = new javax.swing.JButton();
         jLayeredPane2 = new javax.swing.JLayeredPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -78,27 +129,42 @@ public class VistaIdioma extends javax.swing.JFrame {
 
         jLabel1.setText("Porcentaje");
 
-        cbPaises.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbPaises.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPaisesActionPerformed(evt);
+            }
+        });
 
         lbPais.setText("Pais");
 
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        RbOficial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                RbOficialActionPerformed(evt);
             }
         });
 
         jLabel2.setText("Es Oficial");
 
+        BtnnAgregar.setText("Agregar");
+        BtnnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnnAgregarActionPerformed(evt);
+            }
+        });
+
+        BtnnEditar.setText("Editar");
+
         jLayeredPane1.setLayer(lblTitulo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(txtIdioma, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(lblIdioma, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane1.setLayer(jTextField1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(txtPorcentaje, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(cbPaises, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(lbPais, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane1.setLayer(jRadioButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(RbOficial, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(BtnnAgregar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(BtnnEditar, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -123,12 +189,18 @@ public class VistaIdioma extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton1)
+                            .addComponent(RbOficial)
                             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(cbPaises, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                .addComponent(txtPorcentaje, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                                 .addComponent(txtIdioma)))))
                 .addContainerGap())
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(BtnnAgregar)
+                .addGap(18, 18, 18)
+                .addComponent(BtnnEditar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,13 +217,17 @@ public class VistaIdioma extends javax.swing.JFrame {
                     .addComponent(lblIdioma))
                 .addGap(18, 18, 18)
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton1)
+                    .addComponent(RbOficial)
                     .addComponent(jLabel2))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnnAgregar)
+                    .addComponent(BtnnEditar))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -165,24 +241,24 @@ public class VistaIdioma extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane2.setViewportView(jTable1);
 
-        jLayeredPane2.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
         jLayeredPane2.setLayout(jLayeredPane2Layout);
         jLayeredPane2Layout.setHorizontalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jLayeredPane2Layout.setVerticalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -193,9 +269,9 @@ public class VistaIdioma extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
@@ -204,16 +280,66 @@ public class VistaIdioma extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 2, Short.MAX_VALUE))
             .addComponent(jLayeredPane2)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void RbOficialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RbOficialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_RbOficialActionPerformed
+
+    private void cbPaisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPaisesActionPerformed
+        actualizarTablaIdiomas();
+    }//GEN-LAST:event_cbPaisesActionPerformed
+
+    private void BtnnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnnAgregarActionPerformed
+        // 1. Obtiene el país seleccionado del ComboBox.
+        Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
+    
+        // 2. Valida que se haya seleccionado un país.
+        if (paisSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un país.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 3. Valida que los campos de texto no estén vacíos.
+        if (txtIdioma.getText().isEmpty() || txtPorcentaje.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe rellenar los campos de idioma y porcentaje.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 4. Intenta crear el objeto IdiomaPais.
+        try {
+            // Recoge los datos de los componentes usando TUS nombres de variable.
+            String nombreIdioma = txtIdioma.getText();
+            float porcentaje = Float.parseFloat(txtPorcentaje.getText()); // Usa tu JTextField de porcentaje.
+            boolean esOficial = RbOficial.isSelected(); // Usa tu JRadioButton.
+
+            // Crea el nuevo objeto IdiomaPais.
+            IdiomaPais nuevoIdioma = new IdiomaPais(nombreIdioma, esOficial, porcentaje);
+        
+            // 5. Añade el nuevo idioma a la lista del país seleccionado.
+            paisSeleccionado.getIdiomas().add(nuevoIdioma);
+        
+            // 6. Refresca la tabla para mostrar el nuevo idioma inmediatamente.
+            actualizarTablaIdiomas();
+
+            // 7. Limpia los campos para el siguiente ingreso.
+            txtIdioma.setText("");
+            txtPorcentaje.setText("");
+            RbOficial.setSelected(false);
+
+            // 8. Notifica al usuario que todo salió bien.
+            JOptionPane.showMessageDialog(this, "Idioma '" + nombreIdioma + "' agregado a " + paisSeleccionado.getNombre() + ".", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (NumberFormatException e) {
+            // Muestra un error si el porcentaje no es un número válido.
+            JOptionPane.showMessageDialog(this, "El porcentaje debe ser un número válido (ej: 85.5).", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_BtnnAgregarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,20 +367,22 @@ public class VistaIdioma extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cbPaises;
+    private javax.swing.JButton BtnnAgregar;
+    private javax.swing.JButton BtnnEditar;
+    private javax.swing.JRadioButton RbOficial;
+    private javax.swing.JComboBox<Clases.Pais> cbPaises;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbPais;
     private javax.swing.JLabel lblIdioma;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTextField txtIdioma;
+    private javax.swing.JTextField txtPorcentaje;
     // End of variables declaration//GEN-END:variables
 }
