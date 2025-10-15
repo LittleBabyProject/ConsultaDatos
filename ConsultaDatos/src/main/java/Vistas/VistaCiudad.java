@@ -275,7 +275,6 @@ public class VistaCiudad extends javax.swing.JFrame {
             String nombreCiudad = txtNombre.getText();
             String distrito = txtDistrito.getText();
             int poblacion = Integer.parseInt(txtPoblacion.getText());
-
             Ciudad nuevaCiudad = new Ciudad(nombreCiudad, paisSeleccionado.getNombre(), distrito, poblacion);
             paisSeleccionado.getCiudades().add(nuevaCiudad);
             txtNombre.setText("");
