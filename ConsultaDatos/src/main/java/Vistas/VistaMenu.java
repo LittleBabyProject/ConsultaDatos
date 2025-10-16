@@ -21,23 +21,12 @@ public class VistaMenu extends javax.swing.JFrame {
     /**
      * Creates new form VistaMenu
      */
-    public VistaMenu(boolean esAdmin) {
+    public VistaMenu(boolean esAdmin, List<Pais> listaMaestraDePaises) {
         initComponents();
         setLocationRelativeTo(null);
-        cargarDatosDePrueba();
         this.esAdmin = esAdmin;
         lpControlDeUsuarios.setVisible(esAdmin);
-    }
-    
-    private void cargarDatosDePrueba() {
-        
-        this.listaMaestraDePaises = new ArrayList<>();
-        
-        this.listaMaestraDePaises.add(new Pais("Chile", "South America", "South America", 756102.0f, 1810, 19116201, 80.5f, 258.5f, "Republic", "Gabriel Boric", "Santiago", "CHL"));
-        this.listaMaestraDePaises.add(new Pais("Argentina", "South America", "South America", 2780400.0f, 1816, 45376763, 76.7f, 383.1f, "Republic", "Javier Milei", "Buenos Aires", "ARG"));
-        this.listaMaestraDePaises.add(new Pais("Japón", "Asia", "Eastern Asia", 377975.0f, -660, 125507472, 84.5f, 5065.0f, "Constitutional Monarchy", "Fumio Kishida", "Tokyo", "JPN"));
-        
-        System.out.println("Lista de paises creada. Total: " + this.listaMaestraDePaises.size() + " paises.");
+        this.listaMaestraDePaises = listaMaestraDePaises;
     }
 
     /**

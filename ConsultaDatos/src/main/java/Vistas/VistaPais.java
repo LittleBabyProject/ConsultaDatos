@@ -88,6 +88,7 @@ public class VistaPais extends javax.swing.JFrame {
         bttnAgregar = new javax.swing.JButton();
         bttnConsultar = new javax.swing.JButton();
         bttnModificar = new javax.swing.JButton();
+        bttnAtras = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -274,6 +275,13 @@ public class VistaPais extends javax.swing.JFrame {
             }
         });
 
+        bttnAtras.setText("Atras");
+        bttnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnAtrasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -289,7 +297,11 @@ public class VistaPais extends javax.swing.JFrame {
                         .addComponent(bttnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(bttnAtras)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -305,7 +317,8 @@ public class VistaPais extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bttnModificar)
                     .addComponent(bttnAgregar)
-                    .addComponent(bttnConsultar)))
+                    .addComponent(bttnConsultar)
+                    .addComponent(bttnAtras)))
         );
 
         pack();
@@ -417,6 +430,10 @@ public class VistaPais extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCapitalActionPerformed
 
+    private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_bttnAtrasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -444,6 +461,7 @@ public class VistaPais extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bttnAgregar;
+    private javax.swing.JButton bttnAtras;
     private javax.swing.JButton bttnConsultar;
     private javax.swing.JButton bttnModificar;
     private javax.swing.JLabel jLabel1;

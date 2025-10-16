@@ -4,6 +4,7 @@
  */
 package Vistas;
 
+import Clases.Pais;
 import Clases.Usuario;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,12 @@ public class VistaLogin extends javax.swing.JFrame {
      * Creates new form VistaLogin
      */
     private Map<Integer, Usuario> listaUsuarios;
+    private List<Pais> listaMaestraDePaises;
     
-    public VistaLogin(Map<Integer, Usuario> listaUsuarios) {
+    public VistaLogin(Map<Integer, Usuario> listaUsuarios, List<Pais> listaMaestraDePaises) {
         initComponents();
         this.listaUsuarios = listaUsuarios;
+        this.listaMaestraDePaises = listaMaestraDePaises;;
     }
 
     
@@ -212,7 +215,7 @@ public class VistaLogin extends javax.swing.JFrame {
         }
 
         if (esUsuario) {
-            VistaMenu vistaMenu = new VistaMenu(esAdmin);
+            VistaMenu vistaMenu = new VistaMenu(esAdmin, listaMaestraDePaises);
             vistaMenu.setVisible(true);
             this.dispose();
         } 
