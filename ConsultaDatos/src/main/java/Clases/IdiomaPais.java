@@ -27,7 +27,7 @@ public class IdiomaPais {
     }
 
     public void setIdioma(String idioma) {
-        this.idioma = idioma;
+        this.idioma = idioma;       
     }
 
     public boolean isEsOficial() {
@@ -43,7 +43,7 @@ public class IdiomaPais {
     }
 
     public void setPorcentajeHablante(float porcentajeHablante) {
-        this.porcentajeHablante = porcentajeHablante;
+        this.porcentajeHablante = porcentajeHablante;       // falta hacer el validar para que no sea mayor a 100
     }
     
     

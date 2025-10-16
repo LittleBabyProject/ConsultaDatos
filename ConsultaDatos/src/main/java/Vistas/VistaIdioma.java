@@ -59,10 +59,17 @@ public class VistaIdioma extends javax.swing.JFrame {
         Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
         if (paisSeleccionado != null && paisSeleccionado.getIdiomas() != null) {
             for (IdiomaPais idioma : paisSeleccionado.getIdiomas()) {
+                String esOficialTexto;
+                if (idioma.isEsOficial()) {
+                    esOficialTexto = "Sí";
+                } else {
+                    esOficialTexto = "No";
+            }
+                
                 Object[] fila = {
                     idioma.getIdioma(),
                     idioma.getPorcentajeHablante(),
-                    idioma.isEsOficial() ? "Si" : "No"
+                    esOficialTexto
                 };
                 tablaIdiomasModel.addRow(fila);
             }

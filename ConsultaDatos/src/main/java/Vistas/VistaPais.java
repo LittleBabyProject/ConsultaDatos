@@ -51,7 +51,12 @@ public class VistaPais extends javax.swing.JFrame {
         tabla.setRowCount(0); 
 
         for (Pais pais : this.listaPaisesRecibida) {
-            String idiomaPrincipal = pais.getIdiomas().isEmpty() ? "" : pais.getIdiomas().get(0).getIdioma();
+            String idiomaPrincipal;
+            if (pais.getIdiomas().isEmpty()) {
+                idiomaPrincipal = "";
+            } else {
+                idiomaPrincipal = pais.getIdiomas().get(0).getIdioma();
+            }
             Object[] fila = {
                 pais.getCodPais(),
                 pais.getNombre(),
@@ -367,7 +372,12 @@ public class VistaPais extends javax.swing.JFrame {
         txtContinente.setText(paisSeleccionado.getContinente());
         txtPoblacion.setText(String.valueOf(paisSeleccionado.getPoblacion()));
         txtCapital.setText(paisSeleccionado.getCapital());
-        String idioma = paisSeleccionado.getIdiomas().isEmpty() ? "" : paisSeleccionado.getIdiomas().get(0).getIdioma();
+        String idioma;
+        if (paisSeleccionado.getIdiomas().isEmpty()) {
+            idioma = "";
+        } else {
+                idioma = paisSeleccionado.getIdiomas().get(0).getIdioma();
+        }
         txtIdioma.setText(idioma);
     }//GEN-LAST:event_bttnConsultarActionPerformed
 
@@ -419,8 +429,9 @@ public class VistaPais extends javax.swing.JFrame {
         int fila = jTable1.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un pais de la tabla para modificar", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        }else if (txtCodigo.getText().isEmpty() || txtNombre.getText().isEmpty() || txtContinente.getText().isEmpty() || txtPoblacion.getText().isEmpty() || txtCapital.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "complete todos los campos requeridos antes de modificar", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+        }else{
 
         try {
             Pais paisAModificar = this.listaPaisesRecibida.get(fila);
@@ -448,6 +459,7 @@ public class VistaPais extends javax.swing.JFrame {
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "La poblacion debe ser un numero valido", "Error de Formato", JOptionPane.ERROR_MESSAGE);   //faltan mensajes de error para validar los otros campos
+        }
         }
     }//GEN-LAST:event_bttnModificarActionPerformed
 
