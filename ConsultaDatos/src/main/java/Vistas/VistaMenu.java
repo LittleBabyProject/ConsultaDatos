@@ -14,17 +14,21 @@ public class VistaMenu extends javax.swing.JFrame {
     
     private List<Pais> listaMaestraDePaises;
     
+    private boolean esAdmin;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaMenu.class.getName());
 
     /**
      * Creates new form VistaMenu
      */
-    public VistaMenu() {
+    public VistaMenu(boolean esAdmin) {
         initComponents();
         setLocationRelativeTo(null);
         cargarDatosDePrueba();
+        this.esAdmin = esAdmin;
+        lpControlDeUsuarios.setVisible(esAdmin);
     }
-    // 4. AÑADE ESTE MÉTODO COMPLETO PARA CREAR Y LLENAR LA LISTA
+    
     private void cargarDatosDePrueba() {
         
         this.listaMaestraDePaises = new ArrayList<>();
@@ -46,7 +50,7 @@ public class VistaMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         lblTitulo = new javax.swing.JLabel();
-        jLayeredPane2 = new javax.swing.JLayeredPane();
+        lpControlDeUsuarios = new javax.swing.JLayeredPane();
         bttnControlDeUsuario = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         lblConsultaDeDatos = new javax.swing.JLabel();
@@ -66,19 +70,19 @@ public class VistaMenu extends javax.swing.JFrame {
             }
         });
 
-        jLayeredPane2.setLayer(bttnControlDeUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpControlDeUsuarios.setLayer(bttnControlDeUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
-        jLayeredPane2.setLayout(jLayeredPane2Layout);
-        jLayeredPane2Layout.setHorizontalGroup(
-            jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jLayeredPane2Layout.createSequentialGroup()
+        javax.swing.GroupLayout lpControlDeUsuariosLayout = new javax.swing.GroupLayout(lpControlDeUsuarios);
+        lpControlDeUsuarios.setLayout(lpControlDeUsuariosLayout);
+        lpControlDeUsuariosLayout.setHorizontalGroup(
+            lpControlDeUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpControlDeUsuariosLayout.createSequentialGroup()
                 .addGap(109, 109, 109)
                 .addComponent(bttnControlDeUsuario)
                 .addContainerGap(109, Short.MAX_VALUE))
         );
-        jLayeredPane2Layout.setVerticalGroup(
-            jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        lpControlDeUsuariosLayout.setVerticalGroup(
+            lpControlDeUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(bttnControlDeUsuario)
         );
 
@@ -144,7 +148,7 @@ public class VistaMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLayeredPane2)
+                    .addComponent(lpControlDeUsuarios)
                     .addComponent(jLayeredPane1))
                 .addContainerGap())
         );
@@ -154,7 +158,7 @@ public class VistaMenu extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(lblTitulo)
                 .addGap(18, 18, 18)
-                .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lpControlDeUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1)
                 .addContainerGap())
@@ -205,7 +209,6 @@ public class VistaMenu extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new VistaMenu().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -214,9 +217,9 @@ public class VistaMenu extends javax.swing.JFrame {
     private javax.swing.JButton bttnIdioma;
     private javax.swing.JButton bttnPais;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JLabel lblConsultaDeDatos;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLayeredPane lpControlDeUsuarios;
     // End of variables declaration//GEN-END:variables
 
     
