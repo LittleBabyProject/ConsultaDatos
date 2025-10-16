@@ -128,7 +128,24 @@ public class VistaIdioma extends javax.swing.JFrame {
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Registro Idioma internacional");
 
+        txtIdioma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdiomaActionPerformed(evt);
+            }
+        });
+        txtIdioma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdiomaKeyTyped(evt);
+            }
+        });
+
         lblIdioma.setText("Idioma");
+
+        txtPorcentaje.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPorcentajeKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Porcentaje");
 
@@ -250,13 +267,13 @@ public class VistaIdioma extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Idioma", "Porcentaje Hablantes", "Es Oficial"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -394,6 +411,22 @@ public class VistaIdioma extends javax.swing.JFrame {
     private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
         this.dispose();
     }//GEN-LAST:event_bttnAtrasActionPerformed
+
+    private void txtIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdiomaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdiomaActionPerformed
+
+    private void txtIdiomaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdiomaKeyTyped
+        if(txtIdioma.getText().length() > 8 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtIdiomaKeyTyped
+
+    private void txtPorcentajeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentajeKeyTyped
+        if(txtPorcentaje.getText().length() > 2 || !Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPorcentajeKeyTyped
 
     /**
      * @param args the command line arguments

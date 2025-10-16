@@ -48,7 +48,6 @@ public class VistaLogin extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(300, 250));
 
         lblNombreUsuario.setText("Nombre");
 

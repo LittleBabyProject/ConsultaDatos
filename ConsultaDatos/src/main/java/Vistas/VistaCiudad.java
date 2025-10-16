@@ -103,10 +103,27 @@ public class VistaCiudad extends javax.swing.JFrame {
                 txtNombreActionPerformed(evt);
             }
         });
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        txtDistrito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDistritoKeyTyped(evt);
+            }
+        });
 
         lbDistrito.setText("Distrito");
 
         jLabel2.setText("Poblacion");
+
+        txtPoblacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPoblacionKeyTyped(evt);
+            }
+        });
 
         jbPaises.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,13 +221,13 @@ public class VistaCiudad extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nombre", "Distrito", "Poblacion"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -348,6 +365,24 @@ public class VistaCiudad extends javax.swing.JFrame {
     private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
         this.dispose();
     }//GEN-LAST:event_bttnAtrasActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        if(txtNombre.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtDistritoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDistritoKeyTyped
+        if(txtDistrito.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDistritoKeyTyped
+
+    private void txtPoblacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPoblacionKeyTyped
+        if(txtPoblacion.getText().length() > 10 || !Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPoblacionKeyTyped
 
     /**
      * @param args the command line arguments

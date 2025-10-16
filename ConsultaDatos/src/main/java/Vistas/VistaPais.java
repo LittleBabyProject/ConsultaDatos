@@ -161,9 +161,26 @@ public class VistaPais extends javax.swing.JFrame {
             }
         });
 
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        txtContinente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtContinenteKeyTyped(evt);
+            }
+        });
+
         txtPoblacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPoblacionActionPerformed(evt);
+            }
+        });
+        txtPoblacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPoblacionKeyTyped(evt);
             }
         });
 
@@ -172,10 +189,20 @@ public class VistaPais extends javax.swing.JFrame {
                 txtIdiomaActionPerformed(evt);
             }
         });
+        txtIdioma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdiomaKeyTyped(evt);
+            }
+        });
 
         txtCapital.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCapitalActionPerformed(evt);
+            }
+        });
+        txtCapital.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCapitalKeyTyped(evt);
             }
         });
 
@@ -345,7 +372,9 @@ public class VistaPais extends javax.swing.JFrame {
     }//GEN-LAST:event_bttnConsultarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
-        // TODO add your handling code here:
+        if(txtCodigo.getText().length() > 2 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void bttnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAgregarActionPerformed
@@ -433,6 +462,36 @@ public class VistaPais extends javax.swing.JFrame {
     private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
         this.dispose();
     }//GEN-LAST:event_bttnAtrasActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+       if(txtNombre.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtContinenteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContinenteKeyTyped
+        if(txtContinente.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtContinenteKeyTyped
+
+    private void txtPoblacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPoblacionKeyTyped
+       if(txtPoblacion.getText().length() > 10 || !Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPoblacionKeyTyped
+
+    private void txtIdiomaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdiomaKeyTyped
+        if(txtIdioma.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtIdiomaKeyTyped
+
+    private void txtCapitalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCapitalKeyTyped
+        if(txtCapital.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCapitalKeyTyped
 
     /**
      * @param args the command line arguments
