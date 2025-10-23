@@ -5,6 +5,7 @@
 package Vistas;
 import Clases.IdiomaPais;
 import Clases.Pais;
+import Controlador.PaisCon;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -13,12 +14,10 @@ import javax.swing.table.DefaultTableModel;
  * @author aacev
  */
 public class VistaPais extends javax.swing.JFrame {
-    
-    private List<Pais> listaPaisesRecibida;
-    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPais.class.getName());
 
     private DefaultTableModel tabla;
+    private PaisCon controlador;
     private Object[] objeto = new Object[6];    //se crea la tabla con un tamaño maximo de 6
 
     /**
@@ -38,20 +37,15 @@ public class VistaPais extends javax.swing.JFrame {
         tabla = (DefaultTableModel) jTable1.getModel();
         tabla.setRowCount(0);
         setLocationRelativeTo(null);
-        
-        
-        this.listaPaisesRecibida = paises;
-        
-        
-        System.out.println("VistaPais recibió la lista Total: " + this.listaPaisesRecibida.size() + " paises.");
-        
+        this.controlador = new PaisCon(paises);
+        actualizarTabla();
     }
 
     private void actualizarTabla() {
         tabla.setRowCount(0); 
 
-        for (Pais pais : this.listaPaisesRecibida) {
-            String idiomaPrincipal = pais.getIdiomas().isEmpty() ? "" : pais.getIdiomas().get(0).getIdioma();
+        for (Pais pais : controlador.getListaPaises()) {
+            String idiomaPrincipal = controlador.getPrimerIdioma(pais);
             Object[] fila = {
                 pais.getCodPais(),
                 pais.getNombre(),
@@ -321,14 +315,13 @@ public class VistaPais extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un pais de la tabla", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Pais paisSeleccionado = this.listaPaisesRecibida.get(fila);
+        Pais paisSeleccionado = controlador.getPais(fila);;
         txtCodigo.setText(paisSeleccionado.getCodPais());
         txtNombre.setText(paisSeleccionado.getNombre());
         txtContinente.setText(paisSeleccionado.getContinente());
         txtPoblacion.setText(String.valueOf(paisSeleccionado.getPoblacion()));
         txtCapital.setText(paisSeleccionado.getCapital());
-        String idioma = paisSeleccionado.getIdiomas().isEmpty() ? "" : paisSeleccionado.getIdiomas().get(0).getIdioma();
-        txtIdioma.setText(idioma);
+        txtIdioma.setText(controlador.getPrimerIdioma(paisSeleccionado));
     }//GEN-LAST:event_bttnConsultarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
@@ -336,36 +329,27 @@ public class VistaPais extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void bttnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAgregarActionPerformed
-        if (txtCodigo.getText().isEmpty() || txtNombre.getText().isEmpty() || txtContinente.getText().isEmpty() || txtPoblacion.getText().isEmpty() || txtCapital.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "complete todos los campos requeridos", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
-            return;
+        String codigo = txtCodigo.getText();
+        String nombre = txtNombre.getText();
+        String continente = txtContinente.getText();
+        String poblacion = txtPoblacion.getText();
+        String capital = txtCapital.getText();
+        String idiomaStr = txtIdioma.getText();
+        try{
+        controlador.agregarPais(codigo, nombre, continente, poblacion, capital, idiomaStr);
+        JOptionPane.showMessageDialog(this, "Pais " + nombre + " agregado con exito", "exito", JOptionPane.INFORMATION_MESSAGE);
+        actualizarTabla();
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtContinente.setText("");
+        txtPoblacion.setText("");
+        txtIdioma.setText("");
+        txtCapital.setText("");
+        }catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "La población debe ser un numero valido", "Error de dato", JOptionPane.ERROR_MESSAGE);
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "error del controlador", JOptionPane.ERROR_MESSAGE);
         }
-
-        try {
-            String codigo = txtCodigo.getText();
-            String nombre = txtNombre.getText();
-            String continente = txtContinente.getText();
-            int poblacion = Integer.parseInt(txtPoblacion.getText());
-            String capital = txtCapital.getText();
-            String idiomaStr = txtIdioma.getText();
-            Pais nuevoPais = new Pais(nombre, continente, "", 0f, 0, poblacion, 0f, 0f, "", "", capital, codigo); //aqui es donde se crean la clase sin los otros datos
-            if (!idiomaStr.isEmpty()) {
-                nuevoPais.getIdiomas().add(new IdiomaPais(idiomaStr, true, 100.0f));
-            }
-            this.listaPaisesRecibida.add(nuevoPais);
-            actualizarTabla();
-            txtCodigo.setText("");
-            txtNombre.setText("");
-            txtContinente.setText("");
-            txtPoblacion.setText("");
-            txtIdioma.setText("");
-            txtCapital.setText("");
-            JOptionPane.showMessageDialog(this, "Pais '" + nombre + "' agregado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "La población debe ser un número valido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-        }
-   
     }//GEN-LAST:event_bttnAgregarActionPerformed
 
     private void txtPoblacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPoblacionActionPerformed
@@ -376,36 +360,28 @@ public class VistaPais extends javax.swing.JFrame {
     private void bttnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnModificarActionPerformed
         int fila = jTable1.getSelectedRow();
         if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un pais de la tabla para modificar", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un pais para modificar", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
+        String codigo = txtCodigo.getText();
+        String nombre = txtNombre.getText();
+        String continente = txtContinente.getText();
+        String poblacion = txtPoblacion.getText();
+        String capital = txtCapital.getText();
+        String idiomaStr = txtIdioma.getText();
         try {
-            Pais paisAModificar = this.listaPaisesRecibida.get(fila);
-            paisAModificar.setCodPais(txtCodigo.getText());
-            paisAModificar.setNombre(txtNombre.getText());
-            paisAModificar.setContinente(txtContinente.getText());
-            paisAModificar.setPoblacion(Integer.parseInt(txtPoblacion.getText()));
-            paisAModificar.setCapital(txtCapital.getText());
-
-            if (paisAModificar.getIdiomas().isEmpty()) {
-                if (!txtIdioma.getText().isEmpty()) {
-                    paisAModificar.getIdiomas().add(new IdiomaPais(txtIdioma.getText(), true, 100f));
-                }
-            } else {
-                paisAModificar.getIdiomas().get(0).setIdioma(txtIdioma.getText());
-            }
-            actualizarTabla();
+            controlador.modificarPais(fila, codigo, nombre, continente, poblacion, capital, idiomaStr);
+            JOptionPane.showMessageDialog(this, "Pais modificado con exito", "exito", JOptionPane.INFORMATION_MESSAGE);
             txtCodigo.setText("");
             txtNombre.setText("");
             txtContinente.setText("");
             txtPoblacion.setText("");
             txtIdioma.setText("");
             txtCapital.setText("");
-            JOptionPane.showMessageDialog(this, "Pais modificado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "La poblacion debe ser un numero valido", "Error de Formato", JOptionPane.ERROR_MESSAGE);   //faltan mensajes de error para validar los otros campos
+            JOptionPane.showMessageDialog(this, "La población debe ser un numero valido", "Error de dato", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "error del controlador", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_bttnModificarActionPerformed
 
@@ -466,3 +442,4 @@ public class VistaPais extends javax.swing.JFrame {
     private javax.swing.JTextField txtPoblacion;
     // End of variables declaration//GEN-END:variables
 }
+           
