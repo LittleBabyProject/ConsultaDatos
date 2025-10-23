@@ -40,7 +40,7 @@ public class VistaLogin extends javax.swing.JFrame {
         lblNombreUsuario = new javax.swing.JLabel();
         lblContraseñaUsuario = new javax.swing.JLabel();
         txtNombreUsuario = new javax.swing.JTextField();
-        txtContraseñaUsuario = new javax.swing.JPasswordField();
+        txtContrasenaUsuario = new javax.swing.JPasswordField();
         lblMensaje = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         bttnLogin = new javax.swing.JButton();
@@ -64,16 +64,16 @@ public class VistaLogin extends javax.swing.JFrame {
             }
         });
 
-        txtContraseñaUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtContrasenaUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtContraseñaUsuarioKeyTyped(evt);
+                txtContrasenaUsuarioKeyTyped(evt);
             }
         });
 
         jLayeredPane3.setLayer(lblNombreUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane3.setLayer(lblContraseñaUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane3.setLayer(txtNombreUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane3.setLayer(txtContraseñaUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane3.setLayer(txtContrasenaUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane3.setLayer(lblMensaje, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane3Layout = new javax.swing.GroupLayout(jLayeredPane3);
@@ -88,7 +88,7 @@ public class VistaLogin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtNombreUsuario)
-                    .addComponent(txtContraseñaUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                    .addComponent(txtContrasenaUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(jLayeredPane3Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
@@ -105,7 +105,7 @@ public class VistaLogin extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblContraseñaUsuario)
-                    .addComponent(txtContraseñaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtContrasenaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(lblMensaje))
         );
@@ -186,11 +186,11 @@ public class VistaLogin extends javax.swing.JFrame {
 
     private void bttnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnRegistrarActionPerformed
         String nombreRegistro = txtNombreUsuario.getText();
-        String contraseñaRegistro = txtContraseñaUsuario.getText();
+        String contrasenaRegistro = txtContrasenaUsuario.getText();
         int nuevoId = listaUsuarios.size() + 1;
-        Usuario nuevoUsuario = new Usuario(nuevoId, nombreRegistro, contraseñaRegistro, "Usuario");
+        Usuario nuevoUsuario = new Usuario(nuevoId, nombreRegistro, contrasenaRegistro, "Usuario");
         
-        if (nombreRegistro.isEmpty() || contraseñaRegistro.isEmpty()) {
+        if (nombreRegistro.isEmpty() || contrasenaRegistro.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, rellenar los campos faltantes", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
@@ -201,12 +201,12 @@ public class VistaLogin extends javax.swing.JFrame {
 
     private void bttnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnLoginActionPerformed
         String nombreLogin = txtNombreUsuario.getText();
-        String contraseñaLogin = txtContraseñaUsuario.getText();
+        String contrasenaLogin = txtContrasenaUsuario.getText();
         boolean esUsuario = false;
         boolean esAdmin = false;        //atributo no usado de momento, podria usarse a futuro
         
         for (Usuario usuario : listaUsuarios.values()) {
-            if (usuario.getNombre().equals(nombreLogin) && usuario.getContraseña().equals(contraseñaLogin)) {
+            if (usuario.getNombre().equals(nombreLogin) && usuario.getContrasena().equals(contrasenaLogin)) {
                 esUsuario = true;
                 esAdmin = "Admin".equals(usuario.getRol());
                 break;
@@ -233,15 +233,15 @@ public class VistaLogin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtNombreUsuarioKeyTyped
 
-    private void txtContraseñaUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraseñaUsuarioKeyTyped
-        if (txtContraseñaUsuario.getText().length() > 9){
+    private void txtContrasenaUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContrasenaUsuarioKeyTyped
+        if (txtContrasenaUsuario.getText().length() > 9){
             evt.consume();
             lblMensaje.setText("MENSAJE: Se alcanzo el maximo de caracteres.");
         }
         else {
-            lblMensaje.setText("MENSAJE: " + (txtContraseñaUsuario.getText().length() + 1) + "/10 caracteres");
+            lblMensaje.setText("MENSAJE: " + (txtContrasenaUsuario.getText().length() + 1) + "/10 caracteres");
         }
-    }//GEN-LAST:event_txtContraseñaUsuarioKeyTyped
+    }//GEN-LAST:event_txtContrasenaUsuarioKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -253,7 +253,7 @@ public class VistaLogin extends javax.swing.JFrame {
     private javax.swing.JLabel lblMensaje;
     private javax.swing.JLabel lblNombreUsuario;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPasswordField txtContraseñaUsuario;
+    private javax.swing.JPasswordField txtContrasenaUsuario;
     private javax.swing.JTextField txtNombreUsuario;
     // End of variables declaration//GEN-END:variables
 }

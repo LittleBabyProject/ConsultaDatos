@@ -11,16 +11,16 @@ package Clases;
 public class Usuario {
     private int id;
     private String nombre;
-    private String contraseña;
+    private String contrasena;
     private String rol;
 
     public Usuario() {
     }
 
-    public Usuario(int id, String nombre, String contraseña, String rol) {
+    public Usuario(int id, String nombre, String contrasena, String rol) {
         this.id = id;
         this.nombre = nombre;
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
         this.rol = rol;
     }
 
@@ -40,12 +40,12 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getRol() {
