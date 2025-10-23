@@ -31,9 +31,9 @@ public class ConsultaDatos {
         listaUsuarios.put(usuario3.getId(), usuario3);
         
         listaMaestraDePaises = new ArrayList<>();
-        listaMaestraDePaises.add(new Pais("Chile", "South America", "South America", 756102.0f, 1810, 19116201, 80.5f, 258.5f, "Republic", "Gabriel Boric", "Santiago", "CHL"));
-        listaMaestraDePaises.add(new Pais("Argentina", "South America", "South America", 2780400.0f, 1816, 45376763, 76.7f, 383.1f, "Republic", "Javier Milei", "Buenos Aires", "ARG"));
-        listaMaestraDePaises.add(new Pais("Japón", "Asia", "Eastern Asia", 377975.0f, -660, 125507472, 84.5f, 5065.0f, "Constitutional Monarchy", "Fumio Kishida", "Tokyo", "JPN"));
+        listaMaestraDePaises.add(new Pais("Chile", "South America", "South America", 700000.0f, 1810, 19000000, 80.5f, 200.0f, "Republic", "Gabriel Boric", "Santiago", "CHL"));
+        listaMaestraDePaises.add(new Pais("Argentina", "South America", "South America", 2700000.0f, 1816, 40000000, 76.7f, 300.1f, "Republic", "Javier Milei", "Buenos Aires", "ARG"));
+        listaMaestraDePaises.add(new Pais("Japón", "Asia", "Eastern Asia", 300000.0f, -660, 125000000, 84.5f, 5000.0f, "Constitutional Monarchy", "Fumio Kishida", "Tokyo", "JPN"));
         
         
         VistaLogin login = new VistaLogin(listaUsuarios, listaMaestraDePaises);

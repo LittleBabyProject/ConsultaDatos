@@ -43,7 +43,7 @@ public class IdiomaPais {
     }
 
     public void setPorcentajeHablante(float porcentajeHablante) {
-        this.porcentajeHablante = porcentajeHablante;       // falta hacer el validar para que no sea mayor a 100
+        this.porcentajeHablante = porcentajeHablante;
     }
     
     

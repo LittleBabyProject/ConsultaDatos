@@ -9,6 +9,9 @@ import java.util.List;
  *
  * @author Santo Tomas
  */
+
+// HACER VALIDACIONES POR CAPA
+
 public class Pais {
     private String nombre; 
     private String continente; 

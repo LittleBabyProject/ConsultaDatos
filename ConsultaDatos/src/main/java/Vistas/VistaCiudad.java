@@ -313,8 +313,6 @@ public class VistaCiudad extends javax.swing.JFrame {
             txtDistrito.setText("");
             txtPoblacion.setText("");
             JOptionPane.showMessageDialog(this, "Ciudad '" + nombreCiudad + "' agregada a " + paisSeleccionado.getNombre() + " exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            System.out.println("Ciudades en " + paisSeleccionado.getNombre() + ": " + paisSeleccionado.getCiudades().size());
             actualizarTablaCiudades();
     } catch (NumberFormatException e) { //catch por si ingresa texto
         JOptionPane.showMessageDialog(this, "La población debe ser un numero valido", "Error de Formato", JOptionPane.ERROR_MESSAGE);

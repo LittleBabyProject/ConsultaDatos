@@ -19,7 +19,7 @@ public class VistaPais extends javax.swing.JFrame {
 
     private DefaultTableModel tabla;
     private PaisCon controlador;
-    private Object[] objeto = new Object[6];    //se crea la tabla con un tamaño maximo de 6
+    private Object[] objeto = new Object[6];
 
     /**
      * Creates new form Vistas
