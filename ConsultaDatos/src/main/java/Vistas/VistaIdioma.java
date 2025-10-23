@@ -59,10 +59,17 @@ public class VistaIdioma extends javax.swing.JFrame {
         Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
         if (paisSeleccionado != null && paisSeleccionado.getIdiomas() != null) {
             for (IdiomaPais idioma : paisSeleccionado.getIdiomas()) {
+                String esOficialTexto;
+                if (idioma.isEsOficial()) {
+                    esOficialTexto = "Sí";
+                } else {
+                    esOficialTexto = "No";
+            }
+                
                 Object[] fila = {
                     idioma.getIdioma(),
                     idioma.getPorcentajeHablante(),
-                    idioma.isEsOficial() ? "Si" : "No"
+                    esOficialTexto
                 };
                 tablaIdiomasModel.addRow(fila);
             }
@@ -95,6 +102,7 @@ public class VistaIdioma extends javax.swing.JFrame {
         jLayeredPane2 = new javax.swing.JLayeredPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        bttnAtras = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -108,6 +116,7 @@ public class VistaIdioma extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(780, 320));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,7 +135,24 @@ public class VistaIdioma extends javax.swing.JFrame {
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Registro Idioma internacional");
 
+        txtIdioma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdiomaActionPerformed(evt);
+            }
+        });
+        txtIdioma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdiomaKeyTyped(evt);
+            }
+        });
+
         lblIdioma.setText("Idioma");
+
+        txtPorcentaje.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPorcentajeKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Porcentaje");
 
@@ -248,18 +274,26 @@ public class VistaIdioma extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Idioma", "Porcentaje Hablantes", "Es Oficial"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
 
+        bttnAtras.setText("Atras");
+        bttnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnAtrasActionPerformed(evt);
+            }
+        });
+
         jLayeredPane2.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(bttnAtras, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
         jLayeredPane2.setLayout(jLayeredPane2Layout);
@@ -268,13 +302,19 @@ public class VistaIdioma extends javax.swing.JFrame {
             .addGroup(jLayeredPane2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bttnAtras)
+                .addContainerGap())
         );
         jLayeredPane2Layout.setVerticalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(bttnAtras)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -375,6 +415,26 @@ public class VistaIdioma extends javax.swing.JFrame {
         RbOficial.setSelected(idiomaSeleccionado.isEsOficial());
     }//GEN-LAST:event_BttnConsultarActionPerformed
 
+    private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_bttnAtrasActionPerformed
+
+    private void txtIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdiomaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdiomaActionPerformed
+
+    private void txtIdiomaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdiomaKeyTyped
+        if(txtIdioma.getText().length() > 8 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtIdiomaKeyTyped
+
+    private void txtPorcentajeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentajeKeyTyped
+        if(txtPorcentaje.getText().length() > 2 || !Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPorcentajeKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -405,6 +465,7 @@ public class VistaIdioma extends javax.swing.JFrame {
     private javax.swing.JButton BtnnEditar;
     private javax.swing.JButton BttnConsultar;
     private javax.swing.JRadioButton RbOficial;
+    private javax.swing.JButton bttnAtras;
     private javax.swing.JComboBox<Clases.Pais> cbPaises;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

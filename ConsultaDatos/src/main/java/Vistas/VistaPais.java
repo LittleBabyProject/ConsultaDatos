@@ -82,6 +82,7 @@ public class VistaPais extends javax.swing.JFrame {
         bttnAgregar = new javax.swing.JButton();
         bttnConsultar = new javax.swing.JButton();
         bttnModificar = new javax.swing.JButton();
+        bttnAtras = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -154,9 +155,26 @@ public class VistaPais extends javax.swing.JFrame {
             }
         });
 
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        txtContinente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtContinenteKeyTyped(evt);
+            }
+        });
+
         txtPoblacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPoblacionActionPerformed(evt);
+            }
+        });
+        txtPoblacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPoblacionKeyTyped(evt);
             }
         });
 
@@ -165,10 +183,20 @@ public class VistaPais extends javax.swing.JFrame {
                 txtIdiomaActionPerformed(evt);
             }
         });
+        txtIdioma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdiomaKeyTyped(evt);
+            }
+        });
 
         txtCapital.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCapitalActionPerformed(evt);
+            }
+        });
+        txtCapital.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCapitalKeyTyped(evt);
             }
         });
 
@@ -268,6 +296,13 @@ public class VistaPais extends javax.swing.JFrame {
             }
         });
 
+        bttnAtras.setText("Atras");
+        bttnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnAtrasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -283,7 +318,11 @@ public class VistaPais extends javax.swing.JFrame {
                         .addComponent(bttnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(bttnAtras)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -299,7 +338,8 @@ public class VistaPais extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bttnModificar)
                     .addComponent(bttnAgregar)
-                    .addComponent(bttnConsultar)))
+                    .addComponent(bttnConsultar)
+                    .addComponent(bttnAtras)))
         );
 
         pack();
@@ -325,7 +365,9 @@ public class VistaPais extends javax.swing.JFrame {
     }//GEN-LAST:event_bttnConsultarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
-        // TODO add your handling code here:
+        if(txtCodigo.getText().length() > 2 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void bttnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAgregarActionPerformed
@@ -383,6 +425,7 @@ public class VistaPais extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "error del controlador", JOptionPane.ERROR_MESSAGE);
         }
+        }
     }//GEN-LAST:event_bttnModificarActionPerformed
 
     private void txtIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdiomaActionPerformed
@@ -392,6 +435,40 @@ public class VistaPais extends javax.swing.JFrame {
     private void txtCapitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCapitalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCapitalActionPerformed
+
+    private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_bttnAtrasActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+       if(txtNombre.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtContinenteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContinenteKeyTyped
+        if(txtContinente.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtContinenteKeyTyped
+
+    private void txtPoblacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPoblacionKeyTyped
+       if(txtPoblacion.getText().length() > 10 || !Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPoblacionKeyTyped
+
+    private void txtIdiomaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdiomaKeyTyped
+        if(txtIdioma.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtIdiomaKeyTyped
+
+    private void txtCapitalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCapitalKeyTyped
+        if(txtCapital.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCapitalKeyTyped
 
     /**
      * @param args the command line arguments
@@ -420,6 +497,7 @@ public class VistaPais extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bttnAgregar;
+    private javax.swing.JButton bttnAtras;
     private javax.swing.JButton bttnConsultar;
     private javax.swing.JButton bttnModificar;
     private javax.swing.JLabel jLabel1;
