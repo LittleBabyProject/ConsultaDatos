@@ -59,7 +59,7 @@ public class VistaCiudad extends javax.swing.JFrame {
                 Object[] fila = {
                     c.getNombre(),
                     c.getDistrito(),
-                    c.getProblacion()
+                    c.getPoblacion()
                 };
                 
                 tablaCiudadesModel.addRow(fila);
@@ -331,7 +331,7 @@ public class VistaCiudad extends javax.swing.JFrame {
             Ciudad ciudadAModificar = paisSeleccionado.getCiudades().get(filaSeleccionada);
             ciudadAModificar.setNombre(txtNombre.getText());
             ciudadAModificar.setDistrito(txtDistrito.getText());
-            ciudadAModificar.setProblacion(Integer.parseInt(txtPoblacion.getText()));
+            ciudadAModificar.setPoblacion(Integer.parseInt(txtPoblacion.getText()));
             actualizarTablaCiudades();
             txtNombre.setText("");
             txtDistrito.setText("");
@@ -357,7 +357,7 @@ public class VistaCiudad extends javax.swing.JFrame {
         Ciudad ciudadSeleccionada = paisSeleccionado.getCiudades().get(filaSeleccionada);
         txtNombre.setText(ciudadSeleccionada.getNombre());
         txtDistrito.setText(ciudadSeleccionada.getDistrito());
-        txtPoblacion.setText(String.valueOf(ciudadSeleccionada.getProblacion()));
+        txtPoblacion.setText(String.valueOf(ciudadSeleccionada.getPoblacion()));
     }//GEN-LAST:event_BttnConsultarActionPerformed
 
     private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed

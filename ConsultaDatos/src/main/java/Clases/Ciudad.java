@@ -12,16 +12,16 @@ public class Ciudad {
     private String nombre;
     private String paisOrigen;
     private String distrito;
-    private int problacion;
+    private int poblacion;
 
     public Ciudad() {
     }
 
-    public Ciudad(String nombre, String paisOrigen, String distrito, int problacion) {
+    public Ciudad(String nombre, String paisOrigen, String distrito, int poblacion) {
         this.nombre = nombre;
         this.paisOrigen = paisOrigen;
         this.distrito = distrito;
-        this.problacion = problacion;
+        this.poblacion = poblacion;
     }
     
     
@@ -51,12 +51,12 @@ public class Ciudad {
         this.distrito = distrito;
     }
 
-    public int getProblacion() {
-        return problacion;
+    public int getPoblacion() {
+        return poblacion;
     }
 
-    public void setProblacion(int problacion) {
-        this.problacion = problacion;
+    public void setPoblacion(int poblacion) {
+        this.poblacion = poblacion;
     }
     
     
