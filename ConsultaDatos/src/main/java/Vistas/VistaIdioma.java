@@ -4,34 +4,39 @@
  */
 package Vistas;
 
-import Clases.IdiomaPais;
-import Clases.Pais;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author guerr
  */
+
+import Modelo.IdiomaPais;
+import Modelo.Pais;
+import DAO.IdiomaPaisDAO;
+import Controlador.Conn;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class VistaIdioma extends javax.swing.JFrame {
     private List<Pais> listaPaisesRecibida;
     private DefaultTableModel tablaIdiomasModel;
+    private IdiomaPaisDAO idiomaDAO;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaIdioma.class.getName());
 
-    /**
-     * Creates new form VistaIdioma
-     */
     public VistaIdioma() {
         initComponents();
     }
     
-    public VistaIdioma(List<Pais> paises) {
+    public VistaIdioma(List<Pais> paises, Connection connection) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         this.listaPaisesRecibida = paises;
+        this.idiomaDAO = new IdiomaPaisDAO();
         
         configurarModeloTabla();
         cargarPaisesEnComboBox();
@@ -40,6 +45,7 @@ public class VistaIdioma extends javax.swing.JFrame {
     private void configurarModeloTabla() {
         tablaIdiomasModel = (DefaultTableModel) jTable1.getModel();
         tablaIdiomasModel.setColumnCount(0);
+        tablaIdiomasModel.addColumn("ID");
         tablaIdiomasModel.addColumn("Idioma");
         tablaIdiomasModel.addColumn("Porcentaje Hablantes");
         tablaIdiomasModel.addColumn("Es Oficial");
@@ -57,21 +63,25 @@ public class VistaIdioma extends javax.swing.JFrame {
     private void actualizarTablaIdiomas() {
         tablaIdiomasModel.setRowCount(0);
         Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
-        if (paisSeleccionado != null && paisSeleccionado.getIdiomas() != null) {
-            for (IdiomaPais idioma : paisSeleccionado.getIdiomas()) {
-                String esOficialTexto;
-                if (idioma.isEsOficial()) {
-                    esOficialTexto = "Sí";
-                } else {
-                    esOficialTexto = "No";
-            }
+        if (paisSeleccionado != null) {
+            try {
+                // Obtener idiomas desde la base de datos usando el DAO
+                List<IdiomaPais> idiomas = idiomaDAO.obtenerIdiomasPorPais(paisSeleccionado.getIdPais());
                 
-                Object[] fila = {
-                    idioma.getIdioma(),
-                    idioma.getPorcentajeHablante(),
-                    esOficialTexto
-                };
-                tablaIdiomasModel.addRow(fila);
+                for (IdiomaPais idioma : idiomas) {
+                    String esOficialTexto = idioma.isEsOficial() ? "Sí" : "No";
+                    
+                    Object[] fila = {
+                        idioma.getIdIdioma(),
+                        idioma.getIdioma(),
+                        idioma.getPorcentajeHablante() + "%",
+                        esOficialTexto
+                    };
+                    tablaIdiomasModel.addRow(fila);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar idiomas: " + e.getMessage(), 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -364,17 +374,26 @@ public class VistaIdioma extends javax.swing.JFrame {
             String nombreIdioma = txtIdioma.getText();
             float porcentaje = Float.parseFloat(txtPorcentaje.getText());
             boolean esOficial = RbOficial.isSelected();
-            IdiomaPais nuevoIdioma = new IdiomaPais(nombreIdioma, esOficial, porcentaje);
-            paisSeleccionado.getIdiomas().add(nuevoIdioma);
-            actualizarTablaIdiomas();
-            txtIdioma.setText("");
-            txtPorcentaje.setText("");
-            RbOficial.setSelected(false);
+            
+            IdiomaPais nuevoIdioma = new IdiomaPais(paisSeleccionado.getIdPais(), nombreIdioma, esOficial, porcentaje);
+            
+            int idGenerado = idiomaDAO.insertarIdioma(nuevoIdioma);
+            
+            if (idGenerado != -1) {
+                nuevoIdioma.setIdIdioma(idGenerado);
+                actualizarTablaIdiomas();
+                txtIdioma.setText("");
+                txtPorcentaje.setText("");
+                RbOficial.setSelected(false);
 
-            JOptionPane.showMessageDialog(this, "Idioma '" + nombreIdioma + "' agregado a " + paisSeleccionado.getNombre() + ".", "Exito", JOptionPane.INFORMATION_MESSAGE);
-
+                JOptionPane.showMessageDialog(this, "Idioma '" + nombreIdioma + "' agregado a " + paisSeleccionado.getNombre() + ".", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "El porcentaje debe ser un número válido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar idioma: " + e.getMessage(), 
+                                        "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnnAgregarActionPerformed
 
@@ -386,19 +405,31 @@ public class VistaIdioma extends javax.swing.JFrame {
         }
 
         try {
-       
-            Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
-            IdiomaPais idiomaAModificar = paisSeleccionado.getIdiomas().get(filaSeleccionada);
-            idiomaAModificar.setIdioma(txtIdioma.getText());
-            idiomaAModificar.setPorcentajeHablante(Float.parseFloat(txtPorcentaje.getText()));
-            idiomaAModificar.setEsOficial(RbOficial.isSelected());
-            actualizarTablaIdiomas();
-            txtIdioma.setText("");
-            txtPorcentaje.setText("");
-            RbOficial.setSelected(false);
-            JOptionPane.showMessageDialog(this, "Idioma modificado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            int idIdioma = (int) tablaIdiomasModel.getValueAt(filaSeleccionada, 0);
+            
+            IdiomaPais idiomaAModificar = idiomaDAO.obtenerIdiomaPorId(idIdioma);
+            
+            if (idiomaAModificar != null) {
+                idiomaAModificar.setIdioma(txtIdioma.getText());
+                idiomaAModificar.setPorcentajeHablante(Float.parseFloat(txtPorcentaje.getText()));
+                idiomaAModificar.setEsOficial(RbOficial.isSelected());
+                
+                boolean actualizado = idiomaDAO.actualizarIdioma(idiomaAModificar);
+                
+                if (actualizado) {
+                    actualizarTablaIdiomas();
+                    txtIdioma.setText("");
+                    txtPorcentaje.setText("");
+                    RbOficial.setSelected(false);
+                    JOptionPane.showMessageDialog(this, "Idioma modificado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "El porcentaje debe ser un numero válido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar idioma: " + e.getMessage(), 
+                                        "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnnEditarActionPerformed
 
@@ -408,11 +439,21 @@ public class VistaIdioma extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un idioma para consultar", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
-        IdiomaPais idiomaSeleccionado = paisSeleccionado.getIdiomas().get(filaSeleccionada);
-        txtIdioma.setText(idiomaSeleccionado.getIdioma());
-        txtPorcentaje.setText(String.valueOf(idiomaSeleccionado.getPorcentajeHablante()));
-        RbOficial.setSelected(idiomaSeleccionado.isEsOficial());
+        
+        try {
+            int idIdioma = (int) tablaIdiomasModel.getValueAt(filaSeleccionada, 0);
+            
+            IdiomaPais idiomaSeleccionado = idiomaDAO.obtenerIdiomaPorId(idIdioma);
+            
+            if (idiomaSeleccionado != null) {
+                txtIdioma.setText(idiomaSeleccionado.getIdioma());
+                txtPorcentaje.setText(String.valueOf(idiomaSeleccionado.getPorcentajeHablante()));
+                RbOficial.setSelected(idiomaSeleccionado.isEsOficial());
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al consultar idioma: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_BttnConsultarActionPerformed
 
     private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
@@ -466,7 +507,7 @@ public class VistaIdioma extends javax.swing.JFrame {
     private javax.swing.JButton BttnConsultar;
     private javax.swing.JRadioButton RbOficial;
     private javax.swing.JButton bttnAtras;
-    private javax.swing.JComboBox<Clases.Pais> cbPaises;
+    private javax.swing.JComboBox<Modelo.Pais> cbPaises;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLayeredPane jLayeredPane1;

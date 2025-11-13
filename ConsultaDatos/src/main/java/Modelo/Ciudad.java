@@ -2,30 +2,45 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Clases;
+package Modelo;
 
 /**
  *
  * @author Santo Tomas
  */
+
 public class Ciudad {
+    private int idCiudad;
+    private int idPais;
     private String nombre;
-    private String paisOrigen;
     private String distrito;
     private int poblacion;
-
-    public Ciudad() {
-    }
-
-    public Ciudad(String nombre, String paisOrigen, String distrito, int poblacion) {
+    
+    // Constructores
+    public Ciudad() {}
+    
+    public Ciudad(int idPais, String nombre, String distrito, int poblacion) {
+        this.idPais = idPais;
         this.nombre = nombre;
-        this.paisOrigen = paisOrigen;
         this.distrito = distrito;
         this.poblacion = poblacion;
     }
-    
-    
-    
+
+    public int getIdCiudad() {
+        return idCiudad;
+    }
+
+    public void setIdCiudad(int idCiudad) {
+        this.idCiudad = idCiudad;
+    }
+
+    public int getIdPais() {
+        return idPais;
+    }
+
+    public void setIdPais(int idPais) {
+        this.idPais = idPais;
+    }
 
     public String getNombre() {
         return nombre;
@@ -33,14 +48,6 @@ public class Ciudad {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getPaisOrigen() {
-        return paisOrigen;
-    }
-
-    public void setPaisOrigen(String paisOrigen) {
-        this.paisOrigen = paisOrigen;
     }
 
     public String getDistrito() {
@@ -58,7 +65,6 @@ public class Ciudad {
     public void setPoblacion(int poblacion) {
         this.poblacion = poblacion;
     }
-    
     
     
 }

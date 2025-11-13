@@ -4,11 +4,9 @@
  */
 package Vistas;
 
-import Clases.Pais;
-import Clases.Usuario;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import DAO.UsuarioDAO;
+import Modelo.Usuario;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,16 +20,11 @@ public class VistaLogin extends javax.swing.JFrame {
     /**
      * Creates new form VistaLogin
      */
-    private Map<Integer, Usuario> listaUsuarios;
-    private List<Pais> listaMaestraDePaises;
-    
-    public VistaLogin(Map<Integer, Usuario> listaUsuarios, List<Pais> listaMaestraDePaises) {
+    public VistaLogin() {
         initComponents();
-        this.listaUsuarios = listaUsuarios;
-        this.listaMaestraDePaises = listaMaestraDePaises;;
+        setLocationRelativeTo(null); // Centrar la ventana
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -185,41 +178,78 @@ public class VistaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreUsuarioActionPerformed
 
     private void bttnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnRegistrarActionPerformed
-        String nombreRegistro = txtNombreUsuario.getText();
-        String contrasenaRegistro = txtContrasenaUsuario.getText();
-        int nuevoId = listaUsuarios.size() + 1;
-        Usuario nuevoUsuario = new Usuario(nuevoId, nombreRegistro, contrasenaRegistro, "Usuario");
+        String nombreRegistro = txtNombreUsuario.getText().trim();
+        String contrasenaRegistro = new String(txtContrasenaUsuario.getPassword()).trim();
         
         if (nombreRegistro.isEmpty() || contrasenaRegistro.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, rellenar los campos faltantes", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-        else {
-            listaUsuarios.put(nuevoId, nuevoUsuario);
-            JOptionPane.showMessageDialog(null, "El usuario " + nombreRegistro + " se registro con exito", "Usuario registrado", JOptionPane.INFORMATION_MESSAGE);
+        
+        if (nombreRegistro.length() < 3 || contrasenaRegistro.length() < 3) {
+            JOptionPane.showMessageDialog(this, "Nombre y contraseña deben tener al menos 3 caracteres", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            
+            Usuario usuarioExistente = usuarioDAO.validarUsuario(nombreRegistro, contrasenaRegistro);
+            if (usuarioExistente != null) {
+                JOptionPane.showMessageDialog(this, "El usuario ya existe", "Usuario duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            boolean registrado = usuarioDAO.registrarUsuario(nombreRegistro, contrasenaRegistro, "Usuario");
+            
+            if (registrado) {
+                JOptionPane.showMessageDialog(this, "Usuario " + nombreRegistro + " registrado con éxito", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+
+                txtNombreUsuario.setText("");
+                txtContrasenaUsuario.setText("");
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al registrar el usuario", "Error de registro", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(), "Error del sistema", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error en registro: " + e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error inesperado en registro: " + e.getMessage());
         }
     }//GEN-LAST:event_bttnRegistrarActionPerformed
 
     private void bttnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnLoginActionPerformed
-        String nombreLogin = txtNombreUsuario.getText();
-        String contrasenaLogin = txtContrasenaUsuario.getText();
-        boolean esUsuario = false;
-        boolean esAdmin = false;        //atributo no usado de momento, podria usarse a futuro
+        String nombreLogin = txtNombreUsuario.getText().trim();
+        String contrasenaLogin = new String(txtContrasenaUsuario.getPassword()).trim();
         
-        for (Usuario usuario : listaUsuarios.values()) {
-            if (usuario.getNombre().equals(nombreLogin) && usuario.getContrasena().equals(contrasenaLogin)) {
-                esUsuario = true;
-                esAdmin = "Admin".equals(usuario.getRol());
-                break;
-            }
+        if (nombreLogin.isEmpty() || contrasenaLogin.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-
-        if (esUsuario) {
-            VistaMenu vistaMenu = new VistaMenu(esAdmin, listaMaestraDePaises);
-            vistaMenu.setVisible(true);
-            this.dispose();
-        } 
-        else {
-            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Error de datos", JOptionPane.ERROR_MESSAGE);
+        
+        try {
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            Usuario usuario = usuarioDAO.validarUsuario(nombreLogin, contrasenaLogin);
+            
+            if (usuario != null) {
+                boolean esAdmin = "Administrador".equals(usuario.getRol());
+                VistaMenu vistaMenu = new VistaMenu(esAdmin, usuario.getNombre());
+                vistaMenu.setVisible(true);
+                this.dispose();
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error de login", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error de conexión con la base de datos: " + e.getMessage(), "Error del sistema", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error en login: " + e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error inesperado en login: " + e.getMessage());
         }
     }//GEN-LAST:event_bttnLoginActionPerformed
 

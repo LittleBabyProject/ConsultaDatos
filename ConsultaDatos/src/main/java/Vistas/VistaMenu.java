@@ -3,30 +3,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vistas;
-import Clases.Pais;
-import java.util.ArrayList;
+
+import Controlador.Conn;
+import DAO.PaisDAO;
+import Modelo.Pais;
+import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author aacev
  */
 public class VistaMenu extends javax.swing.JFrame {
     
-    private List<Pais> listaMaestraDePaises;
-    
     private boolean esAdmin;
+    private String nombreUsuario;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaMenu.class.getName());
 
     /**
      * Creates new form VistaMenu
      */
-    public VistaMenu(boolean esAdmin, List<Pais> listaMaestraDePaises) {
+    public VistaMenu(boolean esAdmin, String nombreUsuario) {
         initComponents();
         setLocationRelativeTo(null);
         this.esAdmin = esAdmin;
+        this.nombreUsuario = nombreUsuario;
         lpControlDeUsuarios.setVisible(esAdmin);
-        this.listaMaestraDePaises = listaMaestraDePaises;
     }
 
     /**
@@ -157,23 +161,40 @@ public class VistaMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bttnControlDeUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnControlDeUsuarioActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_bttnControlDeUsuarioActionPerformed
 
     private void bttnPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnPaisActionPerformed
-
-        VistaPais vistaPais = new VistaPais(this.listaMaestraDePaises);
-        vistaPais.setVisible(true);
+            VistaPais vistaPais = new VistaPais();
+            vistaPais.setVisible(true);
     }//GEN-LAST:event_bttnPaisActionPerformed
 
     private void bttnCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnCiudadActionPerformed
-        VistaCiudad vistaCiudad = new VistaCiudad(this.listaMaestraDePaises);
+    try {
+        PaisDAO paisDAO = new PaisDAO();
+        List<Pais> listaPaises = paisDAO.obtenerTodosPaises();
+        
+        VistaCiudad vistaCiudad = new VistaCiudad(listaPaises, Conn.getConnection());
         vistaCiudad.setVisible(true);
+        this.dispose();
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar países: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_bttnCiudadActionPerformed
 
     private void bttnIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnIdiomaActionPerformed
-        VistaIdioma vistaIdioma = new VistaIdioma(this.listaMaestraDePaises);
+    try {
+        PaisDAO paisDAO = new PaisDAO();
+        List<Pais> listaPaises = paisDAO.obtenerTodosPaises();
+        
+        VistaIdioma vistaIdioma = new VistaIdioma(listaPaises, Conn.getConnection());
         vistaIdioma.setVisible(true);
+        this.dispose();
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar países: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_bttnIdiomaActionPerformed
 
     /**

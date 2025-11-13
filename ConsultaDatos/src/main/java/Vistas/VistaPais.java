@@ -3,9 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vistas;
-import Clases.IdiomaPais;
-import Clases.Pais;
-import Controlador.PaisCon;
+
+import Modelo.Pais;
+import Controlador.Conn;
+import DAO.PaisDAO;
+import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,35 +20,48 @@ public class VistaPais extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaPais.class.getName());
 
     private DefaultTableModel tabla;
-    private PaisCon controlador;
-    private Object[] objeto = new Object[6];
-
-    /**
-     * Creates new form Vistas
-     */
+    private PaisDAO paisDAO;
+    private List<Pais> paises;
 
     public VistaPais() {
         initComponents();
-        tabla = (DefaultTableModel) jTable1.getModel();
-        tabla.setRowCount(0);
-        setLocationRelativeTo(null);
+        inicializarComponentes();
+        cargarDatosDesdeBD();
     }
     
-    
-    public VistaPais(List<Pais> paises) {
-        initComponents();
+    private void inicializarComponentes() {
         tabla = (DefaultTableModel) jTable1.getModel();
         tabla.setRowCount(0);
         setLocationRelativeTo(null);
-        this.controlador = new PaisCon(paises);
-        actualizarTabla();
+        
+        // Inicializar DAO
+        try {
+            this.paisDAO = new PaisDAO();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al conectar con la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error inicializando PaisDAO: " + e.getMessage());
+        }
+    }
+    
+    private void cargarDatosDesdeBD() {
+        try {
+            if (paisDAO != null) {
+                this.paises = paisDAO.obtenerTodosPaises();
+                actualizarTabla();
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error cargando datos: " + e.getMessage());
+        }
     }
 
     private void actualizarTabla() {
+        if (paises == null) return;
+        
         tabla.setRowCount(0); 
 
-        for (Pais pais : controlador.getListaPaises()) {
-            String idiomaPrincipal = controlador.getPrimerIdioma(pais);
+        for (Pais pais : paises) {
+            String idiomaPrincipal = obtenerPrimerIdioma(pais);
             Object[] fila = {
                 pais.getCodPais(),
                 pais.getNombre(),
@@ -58,7 +73,38 @@ public class VistaPais extends javax.swing.JFrame {
             tabla.addRow(fila);
         }
     }
-    @SuppressWarnings("unchecked")
+    
+    private String obtenerPrimerIdioma(Pais pais) {
+        if (pais == null || pais.getIdiomas().isEmpty()) {
+            return "";          
+        } else {
+            return pais.getIdiomas().get(0).getIdioma();
+        }
+    }
+    
+    private Pais obtenerPaisPorFila(int fila) {
+        if (fila >= 0 && fila < paises.size()) {
+            return paises.get(fila);
+        }
+        return null;
+    }
+    
+    private void limpiarCampos() {
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtContinente.setText("");
+        txtPoblacion.setText("");
+        txtIdioma.setText("");
+        txtCapital.setText("");
+    }
+    
+    private boolean validarCamposRequeridos() {
+        return !txtCodigo.getText().trim().isEmpty() &&
+               !txtNombre.getText().trim().isEmpty() &&
+               !txtContinente.getText().trim().isEmpty() &&
+               !txtPoblacion.getText().trim().isEmpty() &&
+               !txtCapital.getText().trim().isEmpty();
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -345,9 +391,8 @@ public class VistaPais extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void bttnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnConsultarActionPerformed
@@ -356,13 +401,16 @@ public class VistaPais extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un pais de la tabla", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Pais paisSeleccionado = controlador.getPais(fila);;
-        txtCodigo.setText(paisSeleccionado.getCodPais());
-        txtNombre.setText(paisSeleccionado.getNombre());
-        txtContinente.setText(paisSeleccionado.getContinente());
-        txtPoblacion.setText(String.valueOf(paisSeleccionado.getPoblacion()));
-        txtCapital.setText(paisSeleccionado.getCapital());
-        txtIdioma.setText(controlador.getPrimerIdioma(paisSeleccionado));
+        
+        Pais paisSeleccionado = obtenerPaisPorFila(fila);
+        if (paisSeleccionado != null) {
+            txtCodigo.setText(paisSeleccionado.getCodPais());
+            txtNombre.setText(paisSeleccionado.getNombre());
+            txtContinente.setText(paisSeleccionado.getContinente());
+            txtPoblacion.setText(String.valueOf(paisSeleccionado.getPoblacion()));
+            txtCapital.setText(paisSeleccionado.getCapital());
+            txtIdioma.setText(obtenerPrimerIdioma(paisSeleccionado));
+        }
     }//GEN-LAST:event_bttnConsultarActionPerformed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
@@ -372,28 +420,57 @@ public class VistaPais extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void bttnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAgregarActionPerformed
-        String codigo = txtCodigo.getText();
-        String nombre = txtNombre.getText();
-        String continente = txtContinente.getText();
-        String poblacion = txtPoblacion.getText();
-        String capital = txtCapital.getText();
-        String idiomaStr = txtIdioma.getText();
-        try{
-        controlador.agregarPais(codigo, nombre, continente, poblacion, capital, idiomaStr);
-        JOptionPane.showMessageDialog(this, "Pais " + nombre + " agregado con exito", "exito", JOptionPane.INFORMATION_MESSAGE);
-        actualizarTabla();
-        txtCodigo.setText("");
-        txtNombre.setText("");
-        txtContinente.setText("");
-        txtPoblacion.setText("");
-        txtIdioma.setText("");
-        txtCapital.setText("");
-        }catch (NumberFormatException e){
-            JOptionPane.showMessageDialog(this, "La población debe ser un numero valido", "Error de dato", JOptionPane.ERROR_MESSAGE);
-        }catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "error del controlador", JOptionPane.ERROR_MESSAGE);
+        if (!validarCamposRequeridos()) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos requeridos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-   
+        
+        String codigo = txtCodigo.getText().trim().toUpperCase();
+        String nombre = txtNombre.getText().trim();
+        String continente = txtContinente.getText().trim();
+        String poblacionStr = txtPoblacion.getText().trim();
+        String capital = txtCapital.getText().trim();
+        String idiomaStr = txtIdioma.getText().trim();
+        
+        try {
+            // Verificar si el código ya existe
+            Pais paisExistente = paisDAO.obtenerPaisPorCodigo(codigo);
+            if (paisExistente != null) {
+                JOptionPane.showMessageDialog(this, "El código del país ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            int poblacion = Integer.parseInt(poblacionStr);
+            
+            // Crear nuevo país (sin ID para insert)
+            Pais nuevoPais = new Pais(nombre, continente, "", 0.0f, 0, poblacion, 
+                                    0.0f, 0.0f, "", "", capital, codigo);
+            
+            // Agregar idioma si se proporcionó
+            if (!idiomaStr.isEmpty()) {
+                // Necesitarías crear la clase IdiomaPais con este constructor
+                // nuevoPais.agregarIdioma(new IdiomaPais(idiomaStr, true, 100.0f));
+            }
+            
+            // Insertar en la base de datos
+            int idGenerado = paisDAO.insertarPais(nuevoPais);
+            
+            if (idGenerado > 0) {
+                JOptionPane.showMessageDialog(this, "País " + nombre + " agregado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarDatosDesdeBD(); // Recargar datos desde BD
+                limpiarCampos();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al agregar el país", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La población debe ser un número válido", "Error de dato", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error agregando país: " + e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bttnAgregarActionPerformed
 
     private void txtPoblacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPoblacionActionPerformed
@@ -404,30 +481,56 @@ public class VistaPais extends javax.swing.JFrame {
     private void bttnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnModificarActionPerformed
         int fila = jTable1.getSelectedRow();
         if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un pais para modificar", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un país para modificar", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String codigo = txtCodigo.getText();
-        String nombre = txtNombre.getText();
-        String continente = txtContinente.getText();
-        String poblacion = txtPoblacion.getText();
-        String capital = txtCapital.getText();
-        String idiomaStr = txtIdioma.getText();
+        
+        if (!validarCamposRequeridos()) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos requeridos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Pais paisOriginal = obtenerPaisPorFila(fila);
+        if (paisOriginal == null) {
+            JOptionPane.showMessageDialog(this, "País no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String codigo = txtCodigo.getText().trim().toUpperCase();
+        String nombre = txtNombre.getText().trim();
+        String continente = txtContinente.getText().trim();
+        String poblacionStr = txtPoblacion.getText().trim();
+        String capital = txtCapital.getText().trim();
+        String idiomaStr = txtIdioma.getText().trim();
+        
         try {
-            controlador.modificarPais(fila, codigo, nombre, continente, poblacion, capital, idiomaStr);
-            JOptionPane.showMessageDialog(this, "Pais modificado con exito", "exito", JOptionPane.INFORMATION_MESSAGE);
-            actualizarTabla();
-            txtCodigo.setText("");
-            txtNombre.setText("");
-            txtContinente.setText("");
-            txtPoblacion.setText("");
-            txtIdioma.setText("");
-            txtCapital.setText("");
+            int poblacion = Integer.parseInt(poblacionStr);
+            
+            // Actualizar el país existente
+            paisOriginal.setCodPais(codigo);
+            paisOriginal.setNombre(nombre);
+            paisOriginal.setContinente(continente);
+            paisOriginal.setPoblacion(poblacion);
+            paisOriginal.setCapital(capital);
+            
+            // Actualizar en la base de datos
+            boolean exito = paisDAO.actualizarPais(paisOriginal);
+            
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "País modificado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarDatosDesdeBD(); // Recargar datos desde BD
+                limpiarCampos();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al modificar el país", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "La población debe ser un numero valido", "Error de dato", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La población debe ser un número válido", "Error de dato", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error modificando país: " + e.getMessage());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "error del controlador", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_bttnModificarActionPerformed
 
@@ -444,13 +547,13 @@ public class VistaPais extends javax.swing.JFrame {
     }//GEN-LAST:event_bttnAtrasActionPerformed
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
-       if(txtNombre.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+       if(txtNombre.getText().length() > 50 || !Character.isLetter(evt.getKeyChar())){
             evt.consume();
         }
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtContinenteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContinenteKeyTyped
-        if(txtContinente.getText().length() > 10 || !Character.isLetter(evt.getKeyChar())){
+        if(txtContinente.getText().length() > 50 || !Character.isLetter(evt.getKeyChar())){
             evt.consume();
         }
     }//GEN-LAST:event_txtContinenteKeyTyped

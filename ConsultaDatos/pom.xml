@@ -10,4 +10,13 @@
         <maven.compiler.release>19</maven.compiler.release>
         <exec.mainClass>com.mycompany.consultadatos.ConsultaDatos</exec.mainClass>
     </properties>
+    
+    <dependencies>
+        <!-- Dependencia de MySQL Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+    </dependencies>
 </project>
