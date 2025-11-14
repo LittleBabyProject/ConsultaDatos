@@ -14,13 +14,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CiudadDAO {
+public class CiudadDAO implements CiudadCRUD{
     private Connection connection;
     
     public CiudadDAO(Connection connection) {
         this.connection = connection;
     }
     
+    @Override
     public void insertar(Ciudad ciudad) {
         String sql = "INSERT INTO ciudades (id_pais, nombre, distrito, poblacion) VALUES (?, ?, ?, ?)";
         
@@ -42,6 +43,7 @@ public class CiudadDAO {
         }
     }
     
+    @Override
     public Ciudad obtenerPorId(int idCiudad) {
         String sql = "SELECT * FROM ciudades WHERE id_ciudad = ?";
         
@@ -60,6 +62,7 @@ public class CiudadDAO {
         return null;
     }
     
+    @Override
     public List<Ciudad> obtenerTodas() {
         List<Ciudad> ciudades = new ArrayList<>();
         String sql = "SELECT * FROM ciudades ORDER BY nombre";
@@ -78,6 +81,7 @@ public class CiudadDAO {
         return ciudades;
     }
     
+    @Override
     public List<Ciudad> obtenerPorNombre(String nombre) {
         List<Ciudad> ciudades = new ArrayList<>();
         String sql = "SELECT * FROM ciudades WHERE nombre LIKE ? ORDER BY nombre";
@@ -97,6 +101,7 @@ public class CiudadDAO {
         return ciudades;
     }
     
+    @Override
     public List<Ciudad> obtenerPorPais(int idPais) {
         List<Ciudad> ciudades = new ArrayList<>();
         String sql = "SELECT * FROM ciudades WHERE id_pais = ? ORDER BY nombre";
@@ -116,6 +121,7 @@ public class CiudadDAO {
         return ciudades;
     }
     
+    @Override
     public List<Ciudad> obtenerPorDistrito(String distrito) {
         List<Ciudad> ciudades = new ArrayList<>();
         String sql = "SELECT * FROM ciudades WHERE distrito = ? ORDER BY nombre";
@@ -135,6 +141,7 @@ public class CiudadDAO {
         return ciudades;
     }
     
+    @Override
     public void actualizar(Ciudad ciudad) {
         String sql = "UPDATE ciudades SET id_pais = ?, nombre = ?, distrito = ?, poblacion = ? WHERE id_ciudad = ?";
         
@@ -152,6 +159,7 @@ public class CiudadDAO {
         }
     }
     
+    @Override
     public void eliminar(int idCiudad) {
         String sql = "DELETE FROM ciudades WHERE id_ciudad = ?";
         
@@ -164,6 +172,7 @@ public class CiudadDAO {
         }
     }
     
+    @Override
     public List<Ciudad> obtenerPorPoblacionMayorA(int poblacionMinima) {
         List<Ciudad> ciudades = new ArrayList<>();
         String sql = "SELECT * FROM ciudades WHERE poblacion > ? ORDER BY poblacion DESC";
@@ -183,6 +192,7 @@ public class CiudadDAO {
         return ciudades;
     }
     
+    @Override
     public List<Ciudad> obtenerPorPoblacionMenorA(int poblacionMaxima) {
         List<Ciudad> ciudades = new ArrayList<>();
         String sql = "SELECT * FROM ciudades WHERE poblacion < ? ORDER BY poblacion ASC";
@@ -202,6 +212,7 @@ public class CiudadDAO {
         return ciudades;
     }
     
+    @Override
     public int contarTotalCiudades() {
         String sql = "SELECT COUNT(*) as total FROM ciudades";
         
@@ -219,6 +230,7 @@ public class CiudadDAO {
         return 0;
     }
     
+    @Override
     public int contarPorPais(int idPais) {
         String sql = "SELECT COUNT(*) as total FROM ciudades WHERE id_pais = ?";
         

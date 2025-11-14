@@ -15,8 +15,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IdiomaPaisDAO {
+public class IdiomaPaisDAO implements IdiomaPaisCRUD{
     
+    @Override
     public List<IdiomaPais> obtenerTodosIdiomas() throws SQLException {
         List<IdiomaPais> idiomas = new ArrayList<>();
         String sql = "SELECT * FROM idiomas";
@@ -33,6 +34,7 @@ public class IdiomaPaisDAO {
         return idiomas;
     }
     
+    @Override
     public List<IdiomaPais> obtenerIdiomasPorPais(int idPais) throws SQLException {
         List<IdiomaPais> idiomas = new ArrayList<>();
         String sql = "SELECT * FROM idiomas WHERE id_pais = ?";
@@ -50,6 +52,7 @@ public class IdiomaPaisDAO {
         return idiomas;
     }
     
+    @Override
     public List<IdiomaPais> obtenerIdiomasOficiales() throws SQLException {
         List<IdiomaPais> idiomas = new ArrayList<>();
         String sql = "SELECT * FROM idiomas WHERE esOficial = true";
@@ -65,6 +68,7 @@ public class IdiomaPaisDAO {
         return idiomas;
     }
     
+    @Override
     public List<IdiomaPais> obtenerIdiomasOficialesPorPais(int idPais) throws SQLException {
         List<IdiomaPais> idiomas = new ArrayList<>();
         String sql = "SELECT * FROM idiomas WHERE id_pais = ? AND esOficial = true";
@@ -82,6 +86,7 @@ public class IdiomaPaisDAO {
         return idiomas;
     }
     
+    @Override
     public IdiomaPais obtenerIdiomaPorId(int idIdioma) throws SQLException {
         String sql = "SELECT * FROM idiomas WHERE id_idioma = ?";
         
@@ -98,6 +103,7 @@ public class IdiomaPaisDAO {
         return null;
     }
     
+    @Override
     public int insertarIdioma(IdiomaPais idiomaPais) throws SQLException {
         String sql = "INSERT INTO idiomas (id_pais, idioma, esOficial, porcentajeHablante) VALUES (?, ?, ?, ?)";
         
@@ -120,6 +126,7 @@ public class IdiomaPaisDAO {
         return -1;
     }
     
+    @Override
     public boolean actualizarIdioma(IdiomaPais idiomaPais) throws SQLException {
         String sql = "UPDATE idiomas SET id_pais=?, idioma=?, esOficial=?, porcentajeHablante=? WHERE id_idioma=?";
         
@@ -136,6 +143,7 @@ public class IdiomaPaisDAO {
         }
     }
     
+    @Override
     public boolean eliminarIdioma(int idIdioma) throws SQLException {
         String sql = "DELETE FROM idiomas WHERE id_idioma = ?";
         
@@ -147,6 +155,7 @@ public class IdiomaPaisDAO {
         }
     }
     
+    @Override
     public boolean eliminarIdiomasPorPais(int idPais) throws SQLException {
         String sql = "DELETE FROM idiomas WHERE id_pais = ?";
         
@@ -158,6 +167,7 @@ public class IdiomaPaisDAO {
         }
     }
     
+    @Override
     public int contarIdiomasPorPais(int idPais) throws SQLException {
         String sql = "SELECT COUNT(*) as total FROM idiomas WHERE id_pais = ?";
         

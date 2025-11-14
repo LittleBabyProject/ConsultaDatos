@@ -15,8 +15,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaisDAO {
+public class PaisDAO implements PaisCRUD {
 
+    @Override
     public List<Pais> obtenerTodosPaises() throws SQLException {
         List<Pais> paises = new ArrayList<>();
         String sql = "SELECT * FROM paises";
@@ -33,6 +34,7 @@ public class PaisDAO {
         return paises;
     }
     
+    @Override
     public Pais obtenerPaisPorId(int idPais) throws SQLException {
         String sql = "SELECT * FROM paises WHERE id_pais = ?";
         
@@ -49,6 +51,8 @@ public class PaisDAO {
         return null;
     }
     
+    
+    @Override
     public Pais obtenerPaisPorCodigo(String codPais) throws SQLException {
         String sql = "SELECT * FROM paises WHERE codPais = ?";
         
@@ -65,6 +69,7 @@ public class PaisDAO {
         return null;
     }
     
+    @Override
     public int insertarPais(Pais pais) throws SQLException {
         String sql = "INSERT INTO paises (nombre, continente, region, superficie, " +
                     "anioIndependencia, poblacion, expectLife, pib, gobierno, " +
@@ -84,7 +89,7 @@ public class PaisDAO {
         }
         return -1;
     }
-    
+    @Override
     public boolean actualizarPais(Pais pais) throws SQLException {
         String sql = "UPDATE paises SET nombre=?, continente=?, region=?, superficie=?, " +
                     "anioIndependencia=?, poblacion=?, expectLife=?, pib=?, gobierno=?, " +
@@ -99,7 +104,7 @@ public class PaisDAO {
             return pstmt.executeUpdate() > 0;
         }
     }
-    
+    @Override
     public boolean eliminarPais(int idPais) throws SQLException {
         String sql = "DELETE FROM paises WHERE id_pais = ?";
         
