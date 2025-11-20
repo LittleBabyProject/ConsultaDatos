@@ -33,8 +33,7 @@ public class VistaPais extends javax.swing.JFrame {
         tabla = (DefaultTableModel) jTable1.getModel();
         tabla.setRowCount(0);
         setLocationRelativeTo(null);
-        
-        // Inicializar DAO
+
         try {
             this.paisDAO = new PaisDAO();
         } catch (Exception e) {
@@ -433,7 +432,6 @@ public class VistaPais extends javax.swing.JFrame {
         String idiomaStr = txtIdioma.getText().trim();
         
         try {
-            // Verificar si el código ya existe
             Pais paisExistente = paisDAO.obtenerPaisPorCodigo(codigo);
             if (paisExistente != null) {
                 JOptionPane.showMessageDialog(this, "El código del país ya existe", "Error", JOptionPane.ERROR_MESSAGE);
@@ -442,22 +440,26 @@ public class VistaPais extends javax.swing.JFrame {
             
             int poblacion = Integer.parseInt(poblacionStr);
             
-            // Crear nuevo país (sin ID para insert)
-            Pais nuevoPais = new Pais(nombre, continente, "", 0.0f, 0, poblacion, 
-                                    0.0f, 0.0f, "", "", capital, codigo);
+            Pais nuevoPais = new Pais(
+                nombre, 
+                continente, 
+                "N/A",  
+                0.0f,   
+                0,      
+                poblacion, 
+                0.0f,   
+                0.0f,   
+                "N/A",  
+                "N/A",  
+                capital, 
+                codigo
+            );
             
-            // Agregar idioma si se proporcionó
-            if (!idiomaStr.isEmpty()) {
-                // Necesitarías crear la clase IdiomaPais con este constructor
-                // nuevoPais.agregarIdioma(new IdiomaPais(idiomaStr, true, 100.0f));
-            }
-            
-            // Insertar en la base de datos
             int idGenerado = paisDAO.insertarPais(nuevoPais);
             
             if (idGenerado > 0) {
                 JOptionPane.showMessageDialog(this, "País " + nombre + " agregado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarDatosDesdeBD(); // Recargar datos desde BD
+                cargarDatosDesdeBD();
                 limpiarCampos();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al agregar el país", "Error", JOptionPane.ERROR_MESSAGE);
@@ -505,20 +507,16 @@ public class VistaPais extends javax.swing.JFrame {
         
         try {
             int poblacion = Integer.parseInt(poblacionStr);
-            
-            // Actualizar el país existente
             paisOriginal.setCodPais(codigo);
             paisOriginal.setNombre(nombre);
             paisOriginal.setContinente(continente);
             paisOriginal.setPoblacion(poblacion);
             paisOriginal.setCapital(capital);
-            
-            // Actualizar en la base de datos
             boolean exito = paisDAO.actualizarPais(paisOriginal);
             
             if (exito) {
                 JOptionPane.showMessageDialog(this, "País modificado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarDatosDesdeBD(); // Recargar datos desde BD
+                cargarDatosDesdeBD();
                 limpiarCampos();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al modificar el país", "Error", JOptionPane.ERROR_MESSAGE);

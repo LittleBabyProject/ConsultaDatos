@@ -180,44 +180,35 @@ public class VistaLogin extends javax.swing.JFrame {
     private void bttnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnRegistrarActionPerformed
         String nombreRegistro = txtNombreUsuario.getText().trim();
         String contrasenaRegistro = new String(txtContrasenaUsuario.getPassword()).trim();
-        
-        if (nombreRegistro.isEmpty() || contrasenaRegistro.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (nombreRegistro.length() < 3 || contrasenaRegistro.length() < 3) {
-            JOptionPane.showMessageDialog(this, "Nombre y contraseña deben tener al menos 3 caracteres", "Datos inválidos", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
+      
         try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             
-            Usuario usuarioExistente = usuarioDAO.validarUsuario(nombreRegistro, contrasenaRegistro);
-            if (usuarioExistente != null) {
-                JOptionPane.showMessageDialog(this, "El usuario ya existe", "Usuario duplicado", JOptionPane.WARNING_MESSAGE);
+            if (usuarioDAO.usuarioExiste(nombreRegistro)) {
+                JOptionPane.showMessageDialog(this, "El usuario ya existe", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            boolean registrado = usuarioDAO.registrarUsuario(nombreRegistro, contrasenaRegistro, "Usuario");
+            Usuario nuevoUsuario = new Usuario(nombreRegistro, contrasenaRegistro, "Usuario");
+
+            boolean registrado = usuarioDAO.registrarUsuario(
+                nuevoUsuario.getNombre(), 
+                nuevoUsuario.getContrasena(), 
+                nuevoUsuario.getRol()
+            );
             
             if (registrado) {
-                JOptionPane.showMessageDialog(this, "Usuario " + nombreRegistro + " registrado con éxito", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-
+                JOptionPane.showMessageDialog(this, "Usuario registrado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 txtNombreUsuario.setText("");
                 txtContrasenaUsuario.setText("");
-                
             } else {
-                JOptionPane.showMessageDialog(this, "Error al registrar el usuario", "Error de registro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al registrar", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(), "Error del sistema", JOptionPane.ERROR_MESSAGE);
-            logger.severe("Error en registro: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error de BD: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            logger.severe("Error inesperado en registro: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_bttnRegistrarActionPerformed
 

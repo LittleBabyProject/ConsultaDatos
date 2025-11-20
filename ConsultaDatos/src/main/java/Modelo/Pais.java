@@ -30,70 +30,45 @@ public class Pais {
     private List<Ciudad> ciudades = new ArrayList<>(); 
     private List<IdiomaPais> idiomas = new ArrayList<>(); 
 
-    public Pais() {
-        this.ciudades = new ArrayList<>();
-        this.idiomas = new ArrayList<>();
-    }
-
     public Pais(int idPais, String nombre, String continente, String region, float superficie, 
                 int anioIndependencia, int poblacion, float expectLife, float pib, String gobierno, 
                 String jefeGobierno, String capital, String codPais, 
-                List<Ciudad> ciudades, List<IdiomaPais> idiomas) {
+                List<Ciudad> ciudades, List<IdiomaPais> idiomas) throws Exception {
         
         this.idPais = idPais;
-        this.nombre = nombre;
-        this.continente = continente;
-        this.region = region;
-        this.superficie = superficie;
-        this.anioIndependencia = anioIndependencia;
-        this.poblacion = poblacion;
-        this.expectLife = expectLife;
-        this.pib = pib;
-        this.gobierno = gobierno;
-        this.jefeGobierno = jefeGobierno;
-        this.capital = capital;
-        this.codPais = codPais;
+        this.setNombre(nombre);
+        this.setContinente(continente);
+        this.setRegion(region);
+        this.setSuperficie(superficie);
+        this.setAnioIndependencia(anioIndependencia);
+        this.setPoblacion(poblacion);
+        this.setExpectLife(expectLife);
+        this.setPib(pib);
+        this.setGobierno(gobierno);
+        this.setJefeGobierno(jefeGobierno);
+        this.setCapital(capital);
+        this.setCodPais(codPais);
         this.ciudades = ciudades != null ? ciudades : new ArrayList<>();
         this.idiomas = idiomas != null ? idiomas : new ArrayList<>();
     }
 
     public Pais(String nombre, String continente, String region, float superficie, 
                 int anioIndependencia, int poblacion, float expectLife, float pib, 
-                String gobierno, String jefeGobierno, String capital, String codPais) {
+                String gobierno, String jefeGobierno, String capital, String codPais) throws Exception {
         
         this.idPais = 0;
-        this.nombre = nombre;
-        this.continente = continente;
-        this.region = region;
-        this.superficie = superficie;
-        this.anioIndependencia = anioIndependencia;
-        this.poblacion = poblacion;
-        this.expectLife = expectLife;
-        this.pib = pib;
-        this.gobierno = gobierno;
-        this.jefeGobierno = jefeGobierno;
-        this.capital = capital;
-        this.codPais = codPais;
-        this.ciudades = new ArrayList<>();
-        this.idiomas = new ArrayList<>();
-    }
-
-    public Pais(int idPais, String nombre, String continente, String region, float superficie, 
-                int anioIndependencia, int poblacion, float expectLife, float pib, 
-                String gobierno, String jefeGobierno, String capital, String codPais) {
-        this.idPais = idPais;
-        this.nombre = nombre;
-        this.continente = continente;
-        this.region = region;
-        this.superficie = superficie;
-        this.anioIndependencia = anioIndependencia;
-        this.poblacion = poblacion;
-        this.expectLife = expectLife;
-        this.pib = pib;
-        this.gobierno = gobierno;
-        this.jefeGobierno = jefeGobierno;
-        this.capital = capital;
-        this.codPais = codPais;
+        this.setNombre(nombre);
+        this.setContinente(continente);
+        this.setRegion(region);
+        this.setSuperficie(superficie);
+        this.setAnioIndependencia(anioIndependencia);
+        this.setPoblacion(poblacion);
+        this.setExpectLife(expectLife);
+        this.setPib(pib);
+        this.setGobierno(gobierno);
+        this.setJefeGobierno(jefeGobierno);
+        this.setCapital(capital);
+        this.setCodPais(codPais);
         this.ciudades = new ArrayList<>();
         this.idiomas = new ArrayList<>();
     }
@@ -110,7 +85,13 @@ public class Pais {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) throws Exception {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new Exception("El nombre del pais es obligatorio");
+        }
+        if (nombre.length() > 100) {
+            throw new Exception("El nombre no puede exceder 100 caracteres");
+        }
         this.nombre = nombre;
     }
 
@@ -118,7 +99,13 @@ public class Pais {
         return continente;
     }
 
-    public void setContinente(String continente) {
+    public void setContinente(String continente) throws Exception {
+        if (continente == null || continente.trim().isEmpty()) {
+            throw new Exception("El continente es obligatorio");
+        }
+        if (continente.length() > 100) {
+            throw new Exception("El continente no puede exceder 100 caracteres");
+        }
         this.continente = continente;
     }
 
@@ -126,7 +113,13 @@ public class Pais {
         return region;
     }
 
-    public void setRegion(String region) {
+    public void setRegion(String region) throws Exception {
+        if (region == null || region.trim().isEmpty()) {
+            throw new Exception("La region es obligatoria");
+        }
+        if (region.length() > 100) {
+            throw new Exception("La region no puede exceder 100 caracteres");
+        }
         this.region = region;
     }
 
@@ -134,7 +127,10 @@ public class Pais {
         return superficie;
     }
 
-    public void setSuperficie(float superficie) {
+    public void setSuperficie(float superficie) throws Exception {
+        if (superficie < 0) {
+            throw new Exception("La superficie no puede ser negativa");
+        }
         this.superficie = superficie;
     }
 
@@ -150,7 +146,10 @@ public class Pais {
         return poblacion;
     }
 
-    public void setPoblacion(int poblacion) {
+    public void setPoblacion(int poblacion) throws Exception {
+        if (poblacion < 0) {
+            throw new Exception("La poblacion no puede ser negativa");
+        }
         this.poblacion = poblacion;
     }
 
@@ -158,7 +157,10 @@ public class Pais {
         return expectLife;
     }
 
-    public void setExpectLife(float expectLife) {
+    public void setExpectLife(float expectLife) throws Exception {
+        if (expectLife < 0) {
+            throw new Exception("La expectativa de vida no puede ser negativa");
+        }
         this.expectLife = expectLife;
     }
 
@@ -166,7 +168,10 @@ public class Pais {
         return pib;
     }
 
-    public void setPib(float pib) {
+    public void setPib(float pib) throws Exception {
+        if (pib < 0) {
+            throw new Exception("El PIB no puede ser negativo");
+        }
         this.pib = pib;
     }
 
@@ -174,7 +179,13 @@ public class Pais {
         return gobierno;
     }
 
-    public void setGobierno(String gobierno) {
+    public void setGobierno(String gobierno) throws Exception {
+        if (gobierno == null || gobierno.trim().isEmpty()) {
+            throw new Exception("La forma de gobierno es obligatoria");
+        }
+        if (gobierno.length() > 100) {
+            throw new Exception("El gobierno no puede exceder 100 caracteres");
+        }
         this.gobierno = gobierno;
     }
 
@@ -182,7 +193,13 @@ public class Pais {
         return jefeGobierno;
     }
 
-    public void setJefeGobierno(String jefeGobierno) {
+    public void setJefeGobierno(String jefeGobierno) throws Exception {
+        if (jefeGobierno == null || jefeGobierno.trim().isEmpty()) {
+            throw new Exception("El jefe de gobierno es obligatorio");
+        }
+        if (jefeGobierno.length() > 100) {
+            throw new Exception("El jefe de gobierno no puede exceder 100 caracteres");
+        }
         this.jefeGobierno = jefeGobierno;
     }
 
@@ -190,15 +207,27 @@ public class Pais {
         return capital;
     }
 
-    public void setCapital(String capital) {
+    public void setCapital(String capital) throws Exception {
+        if (capital == null || capital.trim().isEmpty()) {
+            throw new Exception("La capital es obligatoria");
+        }
+        if (capital.length() > 100) {
+            throw new Exception("La capital no puede exceder 100 caracteres");
+        }
         this.capital = capital;
     }
 
     public String getCodPais() {
         return codPais;
     }
-
-    public void setCodPais(String codPais) {
+    
+    public void setCodPais(String codPais) throws Exception {
+        if (codPais == null || codPais.trim().isEmpty()) {
+            throw new Exception("El codigo del pais es obligatorio");
+        }
+        if (codPais.length() > 3) {
+             throw new Exception("El codigo no puede tener mas de 3 caracteres");
+        }
         this.codPais = codPais;
     }
 
@@ -225,17 +254,9 @@ public class Pais {
     public void agregarIdioma(IdiomaPais idioma) {
         this.idiomas.add(idioma);
     }
-
-    public void removerCiudad(Ciudad ciudad) {
-        this.ciudades.remove(ciudad);
-    }
-
-    public void removerIdioma(IdiomaPais idioma) {
-        this.idiomas.remove(idioma);
-    }
-
+    
     @Override
     public String toString() {
-        return this.nombre + " (" + this.codPais + ")";
+        return this.nombre;
     }
 }

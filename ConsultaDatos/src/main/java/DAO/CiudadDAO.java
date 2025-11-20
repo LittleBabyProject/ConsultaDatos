@@ -250,12 +250,17 @@ public class CiudadDAO implements CiudadCRUD{
     }
     
     private Ciudad mapearCiudad(ResultSet rs) throws SQLException {
-        Ciudad ciudad = new Ciudad();
-        ciudad.setIdCiudad(rs.getInt("id_ciudad"));
-        ciudad.setIdPais(rs.getInt("id_pais"));
-        ciudad.setNombre(rs.getString("nombre"));
-        ciudad.setDistrito(rs.getString("distrito"));
-        ciudad.setPoblacion(rs.getInt("poblacion"));
-        return ciudad;
+        try {
+            Ciudad ciudad = new Ciudad();
+            ciudad.setIdCiudad(rs.getInt("id_ciudad"));
+            ciudad.setIdPais(rs.getInt("id_pais"));
+            // Estos setters ahora validan
+            ciudad.setNombre(rs.getString("nombre"));
+            ciudad.setDistrito(rs.getString("distrito"));
+            ciudad.setPoblacion(rs.getInt("poblacion"));
+            return ciudad;
+        } catch (Exception e) {
+            throw new SQLException("Error leyendo datos de ciudad: " + e.getMessage());
+        }
     }
 }
