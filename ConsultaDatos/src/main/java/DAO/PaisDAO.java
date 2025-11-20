@@ -117,21 +117,27 @@ public class PaisDAO implements PaisCRUD {
     }
     
     private Pais mapearPais(ResultSet rs) throws SQLException {
-        return new Pais(
-            rs.getInt("id_pais"),
-            rs.getString("nombre"),
-            rs.getString("continente"),
-            rs.getString("region"),
-            rs.getFloat("superficie"),
-            rs.getInt("anioIndependencia"),
-            rs.getInt("poblacion"),
-            rs.getFloat("expectLife"),
-            rs.getFloat("pib"),
-            rs.getString("gobierno"),
-            rs.getString("jefeGobierno"),
-            rs.getString("capital"),
-            rs.getString("codPais")
-        );
+        try {
+            return new Pais(
+                rs.getInt("id_pais"),
+                rs.getString("nombre"),
+                rs.getString("continente"),
+                rs.getString("region"),
+                rs.getFloat("superficie"),
+                rs.getInt("anioIndependencia"),
+                rs.getInt("poblacion"),
+                rs.getFloat("expectLife"),
+                rs.getFloat("pib"),
+                rs.getString("gobierno"),
+                rs.getString("jefeGobierno"),
+                rs.getString("capital"),
+                rs.getString("codPais"),
+                null,
+                null
+            );
+        } catch (Exception e) {
+            throw new SQLException("Error al leer datos del pais: " + e.getMessage());
+        }
     }
     
     private void establecerParametrosPais(PreparedStatement pstmt, Pais pais) throws SQLException {

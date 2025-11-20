@@ -59,7 +59,6 @@ public class VistaCiudad extends javax.swing.JFrame {
         tablaCiudadesModel.setRowCount(0);
         Pais paisSeleccionado = (Pais) jbPaises.getSelectedItem();
         if (paisSeleccionado != null) {
-            // Obtener ciudades desde la base de datos usando el DAO
             List<Ciudad> ciudades = ciudadDAO.obtenerPorPais(paisSeleccionado.getIdPais());
             
             for (Ciudad c : ciudades) {
@@ -67,7 +66,7 @@ public class VistaCiudad extends javax.swing.JFrame {
                     c.getIdCiudad(),
                     c.getNombre(),
                     c.getDistrito(),
-                    c.getPoblacion()  // CORREGIDO: era getProblacion()
+                    c.getPoblacion()
                 };
                 tablaCiudadesModel.addRow(fila);
             }
@@ -316,20 +315,20 @@ public class VistaCiudad extends javax.swing.JFrame {
             String distrito = txtDistrito.getText();
             int poblacion = Integer.parseInt(txtPoblacion.getText());
             
-            // CORREGIDO: Usar el constructor correcto con idPais
             Ciudad nuevaCiudad = new Ciudad(paisSeleccionado.getIdPais(), nombreCiudad, distrito, poblacion);
             
-            // Insertar en la base de datos usando el DAO
             ciudadDAO.insertar(nuevaCiudad);
             
             txtNombre.setText("");
             txtDistrito.setText("");
             txtPoblacion.setText("");
-            JOptionPane.showMessageDialog(this, "Ciudad '" + nombreCiudad + "' agregada a " + paisSeleccionado.getNombre() + " exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ciudad '" + nombreCiudad + "' agregada a " + paisSeleccionado.getNombre() + " exitosamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
             actualizarTablaCiudades();
             
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "La población debe ser un numero valido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La poblacion debe ser un numero valido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnnAgregarActionPerformed
 
@@ -341,19 +340,14 @@ public class VistaCiudad extends javax.swing.JFrame {
         }
 
         try {
-            // Obtener el ID de la ciudad desde la tabla
             int idCiudad = (int) tablaCiudadesModel.getValueAt(filaSeleccionada, 0);
-            
-            // Obtener la ciudad desde la base de datos
             Ciudad ciudadAModificar = ciudadDAO.obtenerPorId(idCiudad);
             
             if (ciudadAModificar != null) {
-                // Actualizar los datos
                 ciudadAModificar.setNombre(txtNombre.getText());
                 ciudadAModificar.setDistrito(txtDistrito.getText());
-                ciudadAModificar.setPoblacion(Integer.parseInt(txtPoblacion.getText())); // CORREGIDO: setPoblacion
+                ciudadAModificar.setPoblacion(Integer.parseInt(txtPoblacion.getText()));
                 
-                // Actualizar en la base de datos
                 ciudadDAO.actualizar(ciudadAModificar);
                 
                 actualizarTablaCiudades();
@@ -364,7 +358,9 @@ public class VistaCiudad extends javax.swing.JFrame {
             }
             
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "La poblacion debe ser un número valido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La poblacion debe ser un numero valido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnnEditarActionPerformed
 
@@ -380,16 +376,13 @@ public class VistaCiudad extends javax.swing.JFrame {
         }
         
         try {
-            // Obtener el ID de la ciudad desde la tabla
             int idCiudad = (int) tablaCiudadesModel.getValueAt(filaSeleccionada, 0);
-            
-            // Obtener la ciudad desde la base de datos
             Ciudad ciudadSeleccionada = ciudadDAO.obtenerPorId(idCiudad);
             
             if (ciudadSeleccionada != null) {
                 txtNombre.setText(ciudadSeleccionada.getNombre());
                 txtDistrito.setText(ciudadSeleccionada.getDistrito());
-                txtPoblacion.setText(String.valueOf(ciudadSeleccionada.getPoblacion())); // CORREGIDO: getPoblacion
+                txtPoblacion.setText(String.valueOf(ciudadSeleccionada.getPoblacion()));
             }
             
         } catch (Exception e) {

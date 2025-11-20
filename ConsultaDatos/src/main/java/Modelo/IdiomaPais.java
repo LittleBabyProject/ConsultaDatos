@@ -19,11 +19,17 @@ public class IdiomaPais {
     public IdiomaPais() {
     }
 
-    public IdiomaPais(int idPais, String idioma, boolean esOficial, float porcentajeHablante) {
+    public IdiomaPais(int idPais, String idioma, boolean esOficial, float porcentajeHablante) throws Exception {
         this.idPais = idPais;
-        this.idioma = idioma;
+        this.setIdioma(idioma);
         this.esOficial = esOficial;
-        this.porcentajeHablante = porcentajeHablante;
+        this.setPorcentajeHablante(porcentajeHablante);
+    }
+    
+    public IdiomaPais(String idioma, boolean esOficial, float porcentajeHablante) throws Exception {
+        this.setIdioma(idioma);
+        this.esOficial = esOficial;
+        this.setPorcentajeHablante(porcentajeHablante);
     }
 
     public int getIdIdioma() {
@@ -46,7 +52,13 @@ public class IdiomaPais {
         return idioma;
     }
 
-    public void setIdioma(String idioma) {
+    public void setIdioma(String idioma) throws Exception {
+        if (idioma == null || idioma.trim().isEmpty()) {
+            throw new Exception("El nombre del idioma es obligatorio");
+        }
+        if (idioma.length() > 100) {
+            throw new Exception("El idioma no puede exceder 100 caracteres");
+        }
         this.idioma = idioma;
     }
 
@@ -61,8 +73,11 @@ public class IdiomaPais {
     public float getPorcentajeHablante() {
         return porcentajeHablante;
     }
-
-    public void setPorcentajeHablante(float porcentajeHablante) {
+    
+    public void setPorcentajeHablante(float porcentajeHablante) throws Exception {
+        if (porcentajeHablante < 0 || porcentajeHablante > 100) {
+            throw new Exception("El porcentaje debe estar entre 0 y 100");
+        }
         this.porcentajeHablante = porcentajeHablante;
     }
     

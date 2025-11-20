@@ -185,12 +185,16 @@ public class IdiomaPaisDAO implements IdiomaPaisCRUD{
     }
     
     private IdiomaPais mapearIdiomaPais(ResultSet rs) throws SQLException {
-        IdiomaPais idioma = new IdiomaPais();
-        idioma.setIdIdioma(rs.getInt("id_idioma"));
-        idioma.setIdPais(rs.getInt("id_pais"));
-        idioma.setIdioma(rs.getString("idioma"));
-        idioma.setEsOficial(rs.getBoolean("esOficial"));
-        idioma.setPorcentajeHablante(rs.getFloat("porcentajeHablante"));
-        return idioma;
+        try {
+            IdiomaPais idioma = new IdiomaPais();
+            idioma.setIdIdioma(rs.getInt("id_idioma"));
+            idioma.setIdPais(rs.getInt("id_pais"));
+            idioma.setIdioma(rs.getString("idioma"));
+            idioma.setEsOficial(rs.getBoolean("esOficial"));
+            idioma.setPorcentajeHablante(rs.getFloat("porcentajeHablante"));
+            return idioma;
+        } catch (Exception e) {
+            throw new SQLException("Error leyendo datos de idioma: " + e.getMessage());
+        }
     }
 }

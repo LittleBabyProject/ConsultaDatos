@@ -16,14 +16,13 @@ public class Ciudad {
     private String distrito;
     private int poblacion;
     
-    // Constructores
     public Ciudad() {}
     
-    public Ciudad(int idPais, String nombre, String distrito, int poblacion) {
+    public Ciudad(int idPais, String nombre, String distrito, int poblacion) throws Exception {
         this.idPais = idPais;
-        this.nombre = nombre;
-        this.distrito = distrito;
-        this.poblacion = poblacion;
+        this.setNombre(nombre);
+        this.setDistrito(distrito);
+        this.setPoblacion(poblacion);
     }
 
     public int getIdCiudad() {
@@ -46,7 +45,13 @@ public class Ciudad {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) throws Exception {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new Exception("El nombre de la ciudad es obligatorio");
+        }
+        if (nombre.length() > 100) {
+            throw new Exception("El nombre no puede exceder 100 caracteres");
+        }
         this.nombre = nombre;
     }
 
@@ -54,7 +59,13 @@ public class Ciudad {
         return distrito;
     }
 
-    public void setDistrito(String distrito) {
+    public void setDistrito(String distrito) throws Exception {
+        if (distrito == null || distrito.trim().isEmpty()) {
+             throw new Exception("El distrito es obligatorio");
+        }
+        if (distrito.length() > 100) {
+            throw new Exception("El distrito no puede exceder 100 caracteres");
+        }
         this.distrito = distrito;
     }
 
@@ -62,7 +73,10 @@ public class Ciudad {
         return poblacion;
     }
 
-    public void setPoblacion(int poblacion) {
+    public void setPoblacion(int poblacion) throws Exception {
+        if (poblacion < 0) {
+            throw new Exception("La poblacion de la ciudad no puede ser negativa");
+        }
         this.poblacion = poblacion;
     }
     

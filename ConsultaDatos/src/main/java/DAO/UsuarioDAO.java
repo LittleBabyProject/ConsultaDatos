@@ -30,12 +30,16 @@ public class UsuarioDAO {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Usuario(
-                        rs.getInt("id_usuario"),
-                        rs.getString("nombre"),
-                        rs.getString("contrasena"), 
-                        rs.getString("rol")
-                    );
+                    try {
+                        return new Usuario(
+                            rs.getInt("id_usuario"),
+                            rs.getString("nombre"),
+                            rs.getString("contrasena"), 
+                            rs.getString("rol")
+                        );
+                    } catch (Exception e) {
+                        throw new SQLException("Error de validacion en usuario encontrado: " + e.getMessage());
+                    }
                 }
             }
         }
@@ -79,10 +83,7 @@ public class UsuarioDAO {
         }
         return false;
     }
-    
-    /**
-     * Obtiene todos los usuarios de la base de datos
-     */
+  
     public List<Usuario> obtenerTodosUsuarios() throws SQLException {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT * FROM usuarios ORDER BY id_usuario";
@@ -92,21 +93,22 @@ public class UsuarioDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
             
             while (rs.next()) {
-                Usuario usuario = new Usuario(
-                    rs.getInt("id_usuario"),
-                    rs.getString("nombre"),
-                    rs.getString("contrasena"),
-                    rs.getString("rol")
-                );
-                usuarios.add(usuario);
+                try {
+                    Usuario usuario = new Usuario(
+                        rs.getInt("id_usuario"),
+                        rs.getString("nombre"),
+                        rs.getString("contrasena"),
+                        rs.getString("rol")
+                    );
+                    usuarios.add(usuario);
+                } catch (Exception e) {
+                    throw new SQLException("Error leyendo usuario ID " + rs.getInt("id_usuario") + ": " + e.getMessage());
+                }
             }
         }
         return usuarios;
     }
     
-    /**
-     * Obtiene un usuario por su ID
-     */
     public Usuario obtenerUsuarioPorId(int idUsuario) throws SQLException {
         String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
         
@@ -117,21 +119,22 @@ public class UsuarioDAO {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Usuario(
-                        rs.getInt("id_usuario"),
-                        rs.getString("nombre"),
-                        rs.getString("contrasena"),
-                        rs.getString("rol")
-                    );
+                    try {
+                        return new Usuario(
+                            rs.getInt("id_usuario"),
+                            rs.getString("nombre"),
+                            rs.getString("contrasena"),
+                            rs.getString("rol")
+                        );
+                    } catch (Exception e) {
+                        throw new SQLException("Error de validacion al leer usuario: " + e.getMessage());
+                    }
                 }
             }
         }
         return null;
     }
     
-    /**
-     * Actualiza un usuario existente
-     */
     public boolean actualizarUsuario(Usuario usuario) throws SQLException {
         String sql = "UPDATE usuarios SET nombre = ?, contrasena = ?, rol = ? WHERE id_usuario = ?";
         
@@ -148,9 +151,7 @@ public class UsuarioDAO {
         }
     }
     
-    /**
-     * Elimina un usuario por su ID
-     */
+
     public boolean eliminarUsuario(int idUsuario) throws SQLException {
         String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
         
@@ -164,9 +165,7 @@ public class UsuarioDAO {
         }
     }
     
-    /**
-     * Cambia el rol de un usuario
-     */
+
     public boolean cambiarRolUsuario(int idUsuario, String nuevoRol) throws SQLException {
         String sql = "UPDATE usuarios SET rol = ? WHERE id_usuario = ?";
         
@@ -181,9 +180,7 @@ public class UsuarioDAO {
         }
     }
     
-    /**
-     * Busca usuarios por nombre (para búsquedas)
-     */
+
     public List<Usuario> buscarUsuariosPorNombre(String nombre) throws SQLException {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT * FROM usuarios WHERE nombre LIKE ? ORDER BY nombre";
@@ -195,22 +192,24 @@ public class UsuarioDAO {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Usuario usuario = new Usuario(
-                        rs.getInt("id_usuario"),
-                        rs.getString("nombre"),
-                        rs.getString("contrasena"),
-                        rs.getString("rol")
-                    );
-                    usuarios.add(usuario);
+                    try {
+                        Usuario usuario = new Usuario(
+                            rs.getInt("id_usuario"),
+                            rs.getString("nombre"),
+                            rs.getString("contrasena"),
+                            rs.getString("rol")
+                        );
+                        usuarios.add(usuario);
+                    } catch (Exception e) {
+                        throw new SQLException("Error de validacion en busqueda: " + e.getMessage());
+                    }
                 }
             }
         }
         return usuarios;
     }
     
-    /**
-     * Obtiene estadísticas de usuarios
-     */
+
     public int contarUsuariosPorRol(String rol) throws SQLException {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE rol = ?";
         
