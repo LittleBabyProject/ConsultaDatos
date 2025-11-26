@@ -33,19 +33,9 @@ public class VistaCiudad extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.listaPaisesRecibida = paises;
         this.ciudadDAO = new CiudadDAO(connection);
-        
-        configurarModeloTabla();
+        this.tablaCiudadesModel = (DefaultTableModel) jTable1.getModel();
         cargarPaisesEnComboBox();
     }
-    
-    private void configurarModeloTabla() {
-    tablaCiudadesModel = (DefaultTableModel) jTable1.getModel();
-    tablaCiudadesModel.setColumnCount(0);
-    tablaCiudadesModel.addColumn("ID");
-    tablaCiudadesModel.addColumn("Nombre");
-    tablaCiudadesModel.addColumn("Distrito");
-    tablaCiudadesModel.addColumn("Población");
-    } 
     
     private void cargarPaisesEnComboBox() {
         DefaultComboBoxModel<Pais> modelo = new DefaultComboBoxModel<>();
@@ -59,15 +49,15 @@ public class VistaCiudad extends javax.swing.JFrame {
         tablaCiudadesModel.setRowCount(0);
         Pais paisSeleccionado = (Pais) jbPaises.getSelectedItem();
         if (paisSeleccionado != null) {
-            // Obtener ciudades desde la base de datos usando el DAO
             List<Ciudad> ciudades = ciudadDAO.obtenerPorPais(paisSeleccionado.getIdPais());
-            
+
             for (Ciudad c : ciudades) {
                 Object[] fila = {
                     c.getIdCiudad(),
                     c.getNombre(),
                     c.getDistrito(),
-                    c.getPoblacion()  // CORREGIDO: era getProblacion()
+                    c.getPoblacion(),
+                    c.isEsCapital()
                 };
                 tablaCiudadesModel.addRow(fila);
             }
@@ -94,7 +84,8 @@ public class VistaCiudad extends javax.swing.JFrame {
         jbPaises = new javax.swing.JComboBox<>();
         BtnnAgregar = new javax.swing.JButton();
         BtnnEditar = new javax.swing.JButton();
-        BttnConsultar = new javax.swing.JButton();
+        rbEsCapital = new javax.swing.JRadioButton();
+        lblEsCapital = new javax.swing.JLabel();
         jLayeredPane2 = new javax.swing.JLayeredPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -153,12 +144,13 @@ public class VistaCiudad extends javax.swing.JFrame {
             }
         });
 
-        BttnConsultar.setText("Consultar");
-        BttnConsultar.addActionListener(new java.awt.event.ActionListener() {
+        rbEsCapital.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BttnConsultarActionPerformed(evt);
+                rbEsCapitalActionPerformed(evt);
             }
         });
+
+        lblEsCapital.setText("Es capital");
 
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(lbNombre, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -170,7 +162,8 @@ public class VistaCiudad extends javax.swing.JFrame {
         jLayeredPane1.setLayer(jbPaises, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(BtnnAgregar, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(BtnnEditar, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane1.setLayer(BttnConsultar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(rbEsCapital, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(lblEsCapital, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -180,64 +173,83 @@ public class VistaCiudad extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(BtnnAgregar)
+                        .addGap(18, 18, 18)
+                        .addComponent(BtnnEditar)
+                        .addContainerGap())
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lbNombre)
                             .addComponent(lbDistrito)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblEsCapital, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtDistrito, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                             .addComponent(txtNombre)
                             .addComponent(txtPoblacion)
-                            .addComponent(jbPaises, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(BttnConsultar)
-                        .addGap(18, 18, 18)
-                        .addComponent(BtnnAgregar)
-                        .addGap(18, 18, 18)
-                        .addComponent(BtnnEditar)
-                        .addContainerGap())))
+                            .addComponent(jbPaises, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                .addComponent(rbEsCapital)
+                                .addGap(0, 0, Short.MAX_VALUE))))))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jbPaises, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNombre)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDistrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbDistrito))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtPoblacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jbPaises, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbNombre)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtDistrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbDistrito))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtPoblacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(rbEsCapital))
+                    .addComponent(lblEsCapital))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnnAgregar)
-                    .addComponent(BtnnEditar)
-                    .addComponent(BttnConsultar))
+                    .addComponent(BtnnEditar))
                 .addGap(19, 19, 19))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Distrito", "Poblacion"
+                "ID", "Nombre", "Distrito", "Poblacion", "Es capital"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         bttnAtras.setText("Atras");
@@ -269,7 +281,7 @@ public class VistaCiudad extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bttnAtras)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -315,16 +327,16 @@ public class VistaCiudad extends javax.swing.JFrame {
             String nombreCiudad = txtNombre.getText();
             String distrito = txtDistrito.getText();
             int poblacion = Integer.parseInt(txtPoblacion.getText());
+            boolean esCapital = rbEsCapital.isSelected();
             
-            // CORREGIDO: Usar el constructor correcto con idPais
-            Ciudad nuevaCiudad = new Ciudad(paisSeleccionado.getIdPais(), nombreCiudad, distrito, poblacion);
+            Ciudad nuevaCiudad = new Ciudad(paisSeleccionado.getIdPais(), nombreCiudad, distrito, poblacion, esCapital);
             
-            // Insertar en la base de datos usando el DAO
             ciudadDAO.insertar(nuevaCiudad);
             
             txtNombre.setText("");
             txtDistrito.setText("");
             txtPoblacion.setText("");
+            rbEsCapital.setSelected(false);
             JOptionPane.showMessageDialog(this, "Ciudad '" + nombreCiudad + "' agregada a " + paisSeleccionado.getNombre() + " exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             actualizarTablaCiudades();
             
@@ -341,25 +353,24 @@ public class VistaCiudad extends javax.swing.JFrame {
         }
 
         try {
-            // Obtener el ID de la ciudad desde la tabla
             int idCiudad = (int) tablaCiudadesModel.getValueAt(filaSeleccionada, 0);
             
-            // Obtener la ciudad desde la base de datos
             Ciudad ciudadAModificar = ciudadDAO.obtenerPorId(idCiudad);
             
             if (ciudadAModificar != null) {
-                // Actualizar los datos
+
                 ciudadAModificar.setNombre(txtNombre.getText());
                 ciudadAModificar.setDistrito(txtDistrito.getText());
-                ciudadAModificar.setPoblacion(Integer.parseInt(txtPoblacion.getText())); // CORREGIDO: setPoblacion
+                ciudadAModificar.setPoblacion(Integer.parseInt(txtPoblacion.getText()));
+                ciudadAModificar.setEsCapital(rbEsCapital.isSelected());
                 
-                // Actualizar en la base de datos
                 ciudadDAO.actualizar(ciudadAModificar);
                 
                 actualizarTablaCiudades();
                 txtNombre.setText("");
                 txtDistrito.setText("");
                 txtPoblacion.setText("");
+                rbEsCapital.setSelected(false);
                 JOptionPane.showMessageDialog(this, "Ciudad modificada con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
             }
             
@@ -371,31 +382,6 @@ public class VistaCiudad extends javax.swing.JFrame {
     private void jbPaisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPaisesActionPerformed
         actualizarTablaCiudades();
     }//GEN-LAST:event_jbPaisesActionPerformed
-
-    private void BttnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttnConsultarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar una ciudad para consultar", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        try {
-            // Obtener el ID de la ciudad desde la tabla
-            int idCiudad = (int) tablaCiudadesModel.getValueAt(filaSeleccionada, 0);
-            
-            // Obtener la ciudad desde la base de datos
-            Ciudad ciudadSeleccionada = ciudadDAO.obtenerPorId(idCiudad);
-            
-            if (ciudadSeleccionada != null) {
-                txtNombre.setText(ciudadSeleccionada.getNombre());
-                txtDistrito.setText(ciudadSeleccionada.getDistrito());
-                txtPoblacion.setText(String.valueOf(ciudadSeleccionada.getPoblacion())); // CORREGIDO: getPoblacion
-            }
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al consultar la ciudad", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_BttnConsultarActionPerformed
 
     private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
         this.dispose();
@@ -418,6 +404,32 @@ public class VistaCiudad extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtPoblacionKeyTyped
+
+    private void rbEsCapitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbEsCapitalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbEsCapitalActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int fila = jTable1.getSelectedRow();
+        if (fila != -1) {
+            String nombre = tablaCiudadesModel.getValueAt(fila, 1).toString();     // Columna 1: Nombre
+            String distrito = tablaCiudadesModel.getValueAt(fila, 2).toString();   // Columna 2: Distrito
+            String poblacion = tablaCiudadesModel.getValueAt(fila, 3).toString();  // Columna 3: Población
+            txtNombre.setText(nombre);
+            txtDistrito.setText(distrito);
+            txtPoblacion.setText(poblacion);
+
+            try {
+                int idCiudad = (int) tablaCiudadesModel.getValueAt(fila, 0);       // Columna 0: ID
+                Ciudad ciudad = ciudadDAO.obtenerPorId(idCiudad);
+                if (ciudad != null) {
+                    rbEsCapital.setSelected(ciudad.isEsCapital());
+                }
+            } catch (Exception e) {
+                logger.warning("Error al obtener datos de capital: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -447,7 +459,6 @@ public class VistaCiudad extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnnAgregar;
     private javax.swing.JButton BtnnEditar;
-    private javax.swing.JButton BttnConsultar;
     private javax.swing.JButton bttnAtras;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -458,6 +469,8 @@ public class VistaCiudad extends javax.swing.JFrame {
     private javax.swing.JComboBox<Modelo.Pais> jbPaises;
     private javax.swing.JLabel lbDistrito;
     private javax.swing.JLabel lbNombre;
+    private javax.swing.JLabel lblEsCapital;
+    private javax.swing.JRadioButton rbEsCapital;
     private javax.swing.JTextField txtDistrito;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPoblacion;

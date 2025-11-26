@@ -15,15 +15,16 @@ public class Ciudad {
     private String nombre;
     private String distrito;
     private int poblacion;
+    private boolean esCapital;
     
-    // Constructores
     public Ciudad() {}
     
-    public Ciudad(int idPais, String nombre, String distrito, int poblacion) {
+    public Ciudad(int idPais, String nombre, String distrito, int poblacion, boolean esCapital) {
         this.idPais = idPais;
         this.nombre = nombre;
         this.distrito = distrito;
         this.poblacion = poblacion;
+        this.esCapital = esCapital;
     }
 
     public int getIdCiudad() {
@@ -65,6 +66,12 @@ public class Ciudad {
     public void setPoblacion(int poblacion) {
         this.poblacion = poblacion;
     }
-    
-    
+
+    public boolean isEsCapital() {
+        return esCapital;
+    }
+
+    public void setEsCapital(boolean esCapital) {
+        this.esCapital = esCapital;
+    }
 }
