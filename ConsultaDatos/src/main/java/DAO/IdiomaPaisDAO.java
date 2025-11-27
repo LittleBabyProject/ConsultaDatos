@@ -183,6 +183,31 @@ public class IdiomaPaisDAO implements IdiomaPaisCRUD{
         }
         return 0;
     }
+    public List<IdiomaPais> obtenerRankingIdiomas() throws SQLException {
+        List<IdiomaPais> idiomas = new ArrayList<>();
+        String sql = "SELECT i.idioma, " +
+                     "SUM(p.poblacion * (i.porcentajeHablante / 100)) / (SELECT SUM(poblacion) FROM paises) * 100 as porcentaje_global " +
+                     "FROM idiomas i " +
+                     "JOIN paises p ON i.id_pais = p.id_pais " +
+                     "GROUP BY i.idioma " +
+                     "ORDER BY porcentaje_global DESC";
+        
+        try (Connection conn = Conn.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                IdiomaPais idioma = new IdiomaPais();
+                idioma.setIdioma(rs.getString("idioma"));
+                idioma.setPorcentajeHablante(rs.getFloat("porcentaje_global"));
+                idioma.setEsOficial(false);
+                idioma.setIdPais(-1);
+                
+                idiomas.add(idioma);
+            }
+        }
+        return idiomas;
+    }
     
     private IdiomaPais mapearIdiomaPais(ResultSet rs) throws SQLException {
         IdiomaPais idioma = new IdiomaPais();

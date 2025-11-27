@@ -81,23 +81,24 @@ public class VistaIdioma extends javax.swing.JFrame {
     private void actualizarTablaIdiomas() {
         tablaIdiomasModel.setRowCount(0);
         Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
-        
         if (paisSeleccionado != null) {
             try {
                 List<IdiomaPais> idiomas;
                 
                 if (paisSeleccionado.getIdPais() == -1) {
-                    idiomas = idiomaDAO.obtenerTodosIdiomas();
+                    idiomas = idiomaDAO.obtenerRankingIdiomas();
                 } else {
                     idiomas = idiomaDAO.obtenerIdiomasPorPais(paisSeleccionado.getIdPais());
                 }
 
                 for (IdiomaPais idioma : idiomas) {
+                    String porcentajeStr = String.format("%.2f", idioma.getPorcentajeHablante());
+                    
                     Object[] fila = {
-                        idioma.getIdIdioma(),
+                        (idioma.getIdPais() == -1) ? "Mundial" : idioma.getIdIdioma(),
                         idioma.getIdioma(),
-                        idioma.getPorcentajeHablante(),
-                        idioma.isEsOficial()
+                        porcentajeStr + "%", 
+                        (idioma.getIdPais() == -1) ? false : idioma.isEsOficial()
                     };
                     tablaIdiomasModel.addRow(fila);
                 }
@@ -224,20 +225,15 @@ public class VistaIdioma extends javax.swing.JFrame {
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE))
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel1))
-                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblIdioma)
-                                    .addComponent(lbPais)
-                                    .addComponent(jLabel2))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblIdioma)
+                            .addComponent(lbPais)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(RbOficial)
                             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -344,10 +340,10 @@ public class VistaIdioma extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
