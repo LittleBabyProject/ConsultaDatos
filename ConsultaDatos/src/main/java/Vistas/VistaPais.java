@@ -120,6 +120,7 @@ public class VistaPais extends javax.swing.JFrame {
         bttnModificar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         bttnAtras = new javax.swing.JButton();
+        bttnVerDetalles = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -336,12 +337,20 @@ public class VistaPais extends javax.swing.JFrame {
             }
         });
 
+        bttnVerDetalles.setText("Ver Detalles");
+        bttnVerDetalles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnVerDetallesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bttnVerDetalles)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(bttnAtras)
                 .addContainerGap())
         );
@@ -349,7 +358,9 @@ public class VistaPais extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(bttnAtras)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bttnAtras)
+                    .addComponent(bttnVerDetalles))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -547,6 +558,20 @@ public class VistaPais extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void bttnVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnVerDetallesActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if (fila == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un país para ver su ficha.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int indiceModelo = jTable1.convertRowIndexToModel(fila);
+        Pais paisSeleccionado = paises.get(indiceModelo);
+        if (paisSeleccionado != null) {
+            VistaDetallePais vistaDetalle = new VistaDetallePais(paisSeleccionado);
+            vistaDetalle.setVisible(true);
+        }
+    }//GEN-LAST:event_bttnVerDetallesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -577,6 +602,7 @@ public class VistaPais extends javax.swing.JFrame {
     private javax.swing.JButton bttnAtras;
     private javax.swing.JButton bttnComparar;
     private javax.swing.JButton bttnModificar;
+    private javax.swing.JButton bttnVerDetalles;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;

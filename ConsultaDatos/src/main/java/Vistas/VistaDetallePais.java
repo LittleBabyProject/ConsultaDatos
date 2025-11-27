@@ -9,42 +9,50 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author guerr
  */
-public class VistaComparar extends javax.swing.JFrame {
+public class VistaDetallePais extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaComparar.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaDetallePais.class.getName());
 
     /**
-     * Creates new form VistaComparar
+     * Creates new form VistaDetallePais
      */
-    public VistaComparar() {
+    public VistaDetallePais() {
         initComponents();
     }
     
-    public VistaComparar(Pais p1, Pais p2) {
+    public VistaDetallePais(Pais pais) {
         initComponents();
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); // Solo cerrar esta ventana
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        tblDetalles.setRowHeight(25);
+        tblDetalles.setShowGrid(true);
         
-        cargarDatos(p1, p2);
+        cargarDatos(pais);
     }
-    
-    private void cargarDatos(Pais p1, Pais p2) {
-        String[] columnas = {"Atributo", p1.getNombre(), p2.getNombre()};
-        DefaultTableModel model = new DefaultTableModel(columnas, 0);
-        
-        model.addRow(new Object[]{"Código", p1.getCodPais(), p2.getCodPais()});
-        model.addRow(new Object[]{"Continente", p1.getContinente(), p2.getContinente()});
-        model.addRow(new Object[]{"Región", p1.getRegion(), p2.getRegion()});
-        model.addRow(new Object[]{"Capital", p1.getCapitalNombre(), p2.getCapitalNombre()});
-        model.addRow(new Object[]{"Población", p1.getPoblacion(), p2.getPoblacion()});
-        model.addRow(new Object[]{"Superficie", p1.getSuperficie() + " km²", p2.getSuperficie() + " km²"});
-        model.addRow(new Object[]{"Año Indep.", p1.getAnioIndependencia(), p2.getAnioIndependencia()});
-        model.addRow(new Object[]{"Gobierno", p1.getGobierno(), p2.getGobierno()});
-        model.addRow(new Object[]{"Jefe de Estado", p1.getJefeGobierno(), p2.getJefeGobierno()});
-        model.addRow(new Object[]{"PIB", "$" + p1.getPib(), "$" + p2.getPib()});
-        model.addRow(new Object[]{"Expectativa Vida", p1.getExpectLife() + " años", p2.getExpectLife() + " años"});
 
-        tblComparacion.setModel(model);
+private void cargarDatos(Pais p) {
+        String[] columnas = {"Dato", "Información"};
+        DefaultTableModel model = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; 
+            }
+        };
+        model.addRow(new Object[]{"Nombre Oficial", p.getNombre()});
+        model.addRow(new Object[]{"Código ISO", p.getCodPais()});
+        model.addRow(new Object[]{"Continente", p.getContinente()});
+        model.addRow(new Object[]{"Región", p.getRegion()});
+        model.addRow(new Object[]{"Capital", p.getCapitalNombre()}); 
+        model.addRow(new Object[]{"Población", String.format("%,d habitantes", p.getPoblacion())});
+        model.addRow(new Object[]{"Superficie", String.format("%,.2f km²", p.getSuperficie())});
+        model.addRow(new Object[]{"Año Independencia", p.getAnioIndependencia() == 0 ? "N/A" : p.getAnioIndependencia()});
+        model.addRow(new Object[]{"Forma de Gobierno", p.getGobierno()});
+        model.addRow(new Object[]{"Jefe de Estado", p.getJefeGobierno()});
+        model.addRow(new Object[]{"PIB", String.format("$ %,.2f", p.getPib())});
+        model.addRow(new Object[]{"Expectativa de Vida", p.getExpectLife() + " años"});
+        tblDetalles.setModel(model);
+        tblDetalles.getColumnModel().getColumn(0).setPreferredWidth(150);
+        tblDetalles.getColumnModel().getColumn(1).setPreferredWidth(300);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,16 +63,14 @@ public class VistaComparar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblComparacion = new javax.swing.JTable();
+        tblDetalles = new javax.swing.JTable();
         btnCerrar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Comparacion De Paises");
-
-        tblComparacion.setModel(new javax.swing.table.DefaultTableModel(
+        tblDetalles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -75,7 +81,7 @@ public class VistaComparar extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblComparacion);
+        jScrollPane1.setViewportView(tblDetalles);
 
         btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -84,36 +90,37 @@ public class VistaComparar extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Detalles del pais");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(159, 159, 159)
-                                .addComponent(jLabel1)))
-                        .addGap(0, 41, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCerrar)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCerrar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 25, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(207, 207, 207)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnCerrar)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -145,13 +152,13 @@ public class VistaComparar extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new VistaComparar().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new VistaDetallePais().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblComparacion;
+    private javax.swing.JTable tblDetalles;
     // End of variables declaration//GEN-END:variables
 }
