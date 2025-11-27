@@ -226,4 +226,14 @@ public class Pais {
     public String toString() {
         return this.nombre + " (" + this.codPais + ")";
     }
+    
+    private String capitalNombre;   //es mas que nada porque quitamos capital a la clase
+
+    public String getCapitalNombre() {
+        return (capitalNombre != null) ? capitalNombre : "No definida";
+    }
+
+    public void setCapitalNombre(String capitalNombre) {
+        this.capitalNombre = capitalNombre;
+    }
 }

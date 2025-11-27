@@ -27,6 +27,8 @@ public class VistaPais extends javax.swing.JFrame {
         initComponents();
         inicializarComponentes();
         cargarDatosDesdeBD();
+        jTable1.setAutoCreateRowSorter(true);
+
     }
     
     private void inicializarComponentes() {
@@ -34,7 +36,6 @@ public class VistaPais extends javax.swing.JFrame {
         tabla.setRowCount(0);
         setLocationRelativeTo(null);
         
-        // Inicializar DAO
         try {
             this.paisDAO = new PaisDAO();
         } catch (Exception e) {
@@ -58,6 +59,9 @@ public class VistaPais extends javax.swing.JFrame {
     private void actualizarTabla() {
         if (paises == null) return;
         
+        String[] columnas = {"Codigo", "Nombre", "Continente", "Poblacion", "Año Independecia"};
+        tabla.setColumnIdentifiers(columnas);
+        
         tabla.setRowCount(0); 
 
         for (Pais pais : paises) {
@@ -65,7 +69,8 @@ public class VistaPais extends javax.swing.JFrame {
                 pais.getCodPais(),
                 pais.getNombre(),
                 pais.getContinente(),
-                pais.getPoblacion()
+                pais.getPoblacion(),
+                pais.getAnioIndependencia()
             };
             tabla.addRow(fila);
         }
@@ -136,17 +141,17 @@ public class VistaPais extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Nombre", "Continente", "Poblacion"
+                "Codigo", "Nombre", "Continente", "Poblacion", "Año Independecia"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -386,18 +391,18 @@ public class VistaPais extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void bttnCompararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnCompararActionPerformed
-        int fila = jTable1.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un pais de la tabla", "Aviso", JOptionPane.WARNING_MESSAGE);
+        int[] filasSeleccionadas = jTable1.getSelectedRows();
+        if (filasSeleccionadas.length != 2) {
+            JOptionPane.showMessageDialog(this,"selecciona 2 países de la tabla","Selección Incorrecta",JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        Pais paisSeleccionado = obtenerPaisPorFila(fila);
-        if (paisSeleccionado != null) {
-            txtCodigo.setText(paisSeleccionado.getCodPais());
-            txtNombre.setText(paisSeleccionado.getNombre());
-            txtContinente.setText(paisSeleccionado.getContinente());
-            txtPoblacion.setText(String.valueOf(paisSeleccionado.getPoblacion()));
+        int indiceModelo1 = jTable1.convertRowIndexToModel(filasSeleccionadas[0]);
+        int indiceModelo2 = jTable1.convertRowIndexToModel(filasSeleccionadas[1]);
+        Pais p1 = paises.get(indiceModelo1);
+        Pais p2 = paises.get(indiceModelo2);
+        if (p1 != null && p2 != null) {
+            VistaComparar ventanaComparar = new VistaComparar(p1, p2);
+            ventanaComparar.setVisible(true);
         }
     }//GEN-LAST:event_bttnCompararActionPerformed
 
@@ -482,19 +487,16 @@ public class VistaPais extends javax.swing.JFrame {
         
         try {
             int poblacion = Integer.parseInt(poblacionStr);
-            
-            // Actualizar el país existente
             paisOriginal.setCodPais(codigo);
             paisOriginal.setNombre(nombre);
             paisOriginal.setContinente(continente);
             paisOriginal.setPoblacion(poblacion);
             
-            // Actualizar en la base de datos
             boolean exito = paisDAO.actualizarPais(paisOriginal);
             
             if (exito) {
                 JOptionPane.showMessageDialog(this, "País modificado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarDatosDesdeBD(); // Recargar datos desde BD
+                cargarDatosDesdeBD();
                 limpiarCampos();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al modificar el país", "Error", JOptionPane.ERROR_MESSAGE);
