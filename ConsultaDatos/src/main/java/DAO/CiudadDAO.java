@@ -23,13 +23,14 @@ public class CiudadDAO implements CiudadCRUD{
     
     @Override
     public void insertar(Ciudad ciudad) {
-        String sql = "INSERT INTO ciudades (id_pais, nombre, distrito, poblacion) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO ciudades (id_pais, nombre, distrito, poblacion, esCapital) VALUES (?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, ciudad.getIdPais());
             stmt.setString(2, ciudad.getNombre());
             stmt.setString(3, ciudad.getDistrito());
             stmt.setInt(4, ciudad.getPoblacion());
+            stmt.setBoolean(5, ciudad.isEsCapital());
             
             stmt.executeUpdate();
             
@@ -143,17 +144,18 @@ public class CiudadDAO implements CiudadCRUD{
     
     @Override
     public void actualizar(Ciudad ciudad) {
-        String sql = "UPDATE ciudades SET id_pais = ?, nombre = ?, distrito = ?, poblacion = ? WHERE id_ciudad = ?";
-        
+        String sql = "UPDATE ciudades SET id_pais = ?, nombre = ?, distrito = ?, poblacion = ?, es_capital = ? WHERE id_ciudad = ?";
+
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, ciudad.getIdPais());
             stmt.setString(2, ciudad.getNombre());
             stmt.setString(3, ciudad.getDistrito());
             stmt.setInt(4, ciudad.getPoblacion());
-            stmt.setInt(5, ciudad.getIdCiudad());
-            
+            stmt.setBoolean(5, ciudad.isEsCapital());
+            stmt.setInt(6, ciudad.getIdCiudad());
+
             stmt.executeUpdate();
-            
+
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar ciudad", e);
         }
@@ -256,6 +258,7 @@ public class CiudadDAO implements CiudadCRUD{
         ciudad.setNombre(rs.getString("nombre"));
         ciudad.setDistrito(rs.getString("distrito"));
         ciudad.setPoblacion(rs.getInt("poblacion"));
+        ciudad.setEsCapital(rs.getBoolean("es_capital"));
         return ciudad;
     }
 }

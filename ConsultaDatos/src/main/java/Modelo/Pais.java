@@ -25,7 +25,6 @@ public class Pais {
     private float pib;  
     private String gobierno; 
     private String jefeGobierno; 
-    private String capital; 
     private String codPais; // ej; 'CHL' 
     private List<Ciudad> ciudades = new ArrayList<>(); 
     private List<IdiomaPais> idiomas = new ArrayList<>(); 
@@ -37,7 +36,7 @@ public class Pais {
 
     public Pais(int idPais, String nombre, String continente, String region, float superficie, 
                 int anioIndependencia, int poblacion, float expectLife, float pib, String gobierno, 
-                String jefeGobierno, String capital, String codPais, 
+                String jefeGobierno, String codPais, 
                 List<Ciudad> ciudades, List<IdiomaPais> idiomas) {
         
         this.idPais = idPais;
@@ -51,7 +50,6 @@ public class Pais {
         this.pib = pib;
         this.gobierno = gobierno;
         this.jefeGobierno = jefeGobierno;
-        this.capital = capital;
         this.codPais = codPais;
         this.ciudades = ciudades != null ? ciudades : new ArrayList<>();
         this.idiomas = idiomas != null ? idiomas : new ArrayList<>();
@@ -59,7 +57,7 @@ public class Pais {
 
     public Pais(String nombre, String continente, String region, float superficie, 
                 int anioIndependencia, int poblacion, float expectLife, float pib, 
-                String gobierno, String jefeGobierno, String capital, String codPais) {
+                String gobierno, String jefeGobierno, String codPais) {
         
         this.idPais = 0;
         this.nombre = nombre;
@@ -72,7 +70,6 @@ public class Pais {
         this.pib = pib;
         this.gobierno = gobierno;
         this.jefeGobierno = jefeGobierno;
-        this.capital = capital;
         this.codPais = codPais;
         this.ciudades = new ArrayList<>();
         this.idiomas = new ArrayList<>();
@@ -80,7 +77,7 @@ public class Pais {
 
     public Pais(int idPais, String nombre, String continente, String region, float superficie, 
                 int anioIndependencia, int poblacion, float expectLife, float pib, 
-                String gobierno, String jefeGobierno, String capital, String codPais) {
+                String gobierno, String jefeGobierno, String codPais) {
         this.idPais = idPais;
         this.nombre = nombre;
         this.continente = continente;
@@ -92,7 +89,6 @@ public class Pais {
         this.pib = pib;
         this.gobierno = gobierno;
         this.jefeGobierno = jefeGobierno;
-        this.capital = capital;
         this.codPais = codPais;
         this.ciudades = new ArrayList<>();
         this.idiomas = new ArrayList<>();
@@ -184,14 +180,6 @@ public class Pais {
 
     public void setJefeGobierno(String jefeGobierno) {
         this.jefeGobierno = jefeGobierno;
-    }
-
-    public String getCapital() {
-        return capital;
-    }
-
-    public void setCapital(String capital) {
-        this.capital = capital;
     }
 
     public String getCodPais() {

@@ -24,6 +24,7 @@ public class VistaIdioma extends javax.swing.JFrame {
     private List<Pais> listaPaisesRecibida;
     private DefaultTableModel tablaIdiomasModel;
     private IdiomaPaisDAO idiomaDAO;
+    private int idiomaSeleccionadoId = -1;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaIdioma.class.getName());
 
     public VistaIdioma() {
@@ -34,22 +35,12 @@ public class VistaIdioma extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
         this.listaPaisesRecibida = paises;
         this.idiomaDAO = new IdiomaPaisDAO();
-        
-        configurarModeloTabla();
+        this.tablaIdiomasModel = (DefaultTableModel) jTable1.getModel();
         cargarPaisesEnComboBox();
     }
 
-    private void configurarModeloTabla() {
-        tablaIdiomasModel = (DefaultTableModel) jTable1.getModel();
-        tablaIdiomasModel.setColumnCount(0);
-        tablaIdiomasModel.addColumn("ID");
-        tablaIdiomasModel.addColumn("Idioma");
-        tablaIdiomasModel.addColumn("Porcentaje Hablantes");
-        tablaIdiomasModel.addColumn("Es Oficial");
-    }
 
     private void cargarPaisesEnComboBox() {
         DefaultComboBoxModel<Pais> modelo = new DefaultComboBoxModel<>();
@@ -60,22 +51,28 @@ public class VistaIdioma extends javax.swing.JFrame {
         actualizarTablaIdiomas();
     }
     
+    private Pais obtenerPaisPorId(int idPais) {
+        for (Pais pais : listaPaisesRecibida) {
+            if (pais.getIdPais() == idPais) {
+                return pais;
+            }
+        }
+        return null;
+    }
+    
     private void actualizarTablaIdiomas() {
         tablaIdiomasModel.setRowCount(0);
         Pais paisSeleccionado = (Pais) cbPaises.getSelectedItem();
         if (paisSeleccionado != null) {
             try {
-                // Obtener idiomas desde la base de datos usando el DAO
                 List<IdiomaPais> idiomas = idiomaDAO.obtenerIdiomasPorPais(paisSeleccionado.getIdPais());
-                
+
                 for (IdiomaPais idioma : idiomas) {
-                    String esOficialTexto = idioma.isEsOficial() ? "Sí" : "No";
-                    
                     Object[] fila = {
-                        idioma.getIdIdioma(),
-                        idioma.getIdioma(),
-                        idioma.getPorcentajeHablante() + "%",
-                        esOficialTexto
+                        idioma.getIdIdioma(),                    // Columna 0: ID
+                        idioma.getIdioma(),                      // Columna 1: Idioma
+                        idioma.getPorcentajeHablante() + "%",    // Columna 2: Porcentaje
+                        idioma.isEsOficial()                    // Columna 3: Es oficial (Boolean)
                     };
                     tablaIdiomasModel.addRow(fila);
                 }
@@ -95,7 +92,6 @@ public class VistaIdioma extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         lblTitulo = new javax.swing.JLabel();
         txtIdioma = new javax.swing.JTextField();
@@ -108,7 +104,6 @@ public class VistaIdioma extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         BtnnAgregar = new javax.swing.JButton();
         BtnnEditar = new javax.swing.JButton();
-        BttnConsultar = new javax.swing.JButton();
         jLayeredPane2 = new javax.swing.JLayeredPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -126,18 +121,6 @@ public class VistaIdioma extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(780, 320));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 205, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
-        );
 
         jLayeredPane1.setPreferredSize(new java.awt.Dimension(250, 288));
 
@@ -196,13 +179,6 @@ public class VistaIdioma extends javax.swing.JFrame {
             }
         });
 
-        BttnConsultar.setText("Consultar");
-        BttnConsultar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BttnConsultarActionPerformed(evt);
-            }
-        });
-
         jLayeredPane1.setLayer(lblTitulo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(txtIdioma, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(lblIdioma, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -214,7 +190,6 @@ public class VistaIdioma extends javax.swing.JFrame {
         jLayeredPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(BtnnAgregar, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(BtnnEditar, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane1.setLayer(BttnConsultar, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -246,8 +221,6 @@ public class VistaIdioma extends javax.swing.JFrame {
                                 .addComponent(txtIdioma))))
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(BttnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BtnnAgregar)
                         .addGap(18, 18, 18)
                         .addComponent(BtnnEditar)))
@@ -277,22 +250,34 @@ public class VistaIdioma extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnnEditar)
-                    .addComponent(BtnnAgregar)
-                    .addComponent(BttnConsultar))
+                    .addComponent(BtnnAgregar))
                 .addGap(21, 21, 21))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Idioma", "Porcentaje Hablantes", "Es Oficial"
+                "ID", "Idioma", "Hablantes (%)", "Es oficial"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
         bttnAtras.setText("Atras");
@@ -337,12 +322,10 @@ public class VistaIdioma extends javax.swing.JFrame {
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(jLayeredPane2)
         );
@@ -398,63 +381,40 @@ public class VistaIdioma extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnnAgregarActionPerformed
 
     private void BtnnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnnEditarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Primero debe consultar el idioma que desea editar", "Aviso", JOptionPane.WARNING_MESSAGE);
+        if (idiomaSeleccionadoId == -1) {
+            JOptionPane.showMessageDialog(this, "Primero debe seleccionar un idioma de la tabla", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            int idIdioma = (int) tablaIdiomasModel.getValueAt(filaSeleccionada, 0);
-            
-            IdiomaPais idiomaAModificar = idiomaDAO.obtenerIdiomaPorId(idIdioma);
-            
+            IdiomaPais idiomaAModificar = idiomaDAO.obtenerIdiomaPorId(idiomaSeleccionadoId);
+
             if (idiomaAModificar != null) {
                 idiomaAModificar.setIdioma(txtIdioma.getText());
                 idiomaAModificar.setPorcentajeHablante(Float.parseFloat(txtPorcentaje.getText()));
                 idiomaAModificar.setEsOficial(RbOficial.isSelected());
-                
+
                 boolean actualizado = idiomaDAO.actualizarIdioma(idiomaAModificar);
-                
+
                 if (actualizado) {
                     actualizarTablaIdiomas();
+                    JOptionPane.showMessageDialog(this, "Idioma modificado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Limpiar después de editar
                     txtIdioma.setText("");
                     txtPorcentaje.setText("");
                     RbOficial.setSelected(false);
-                    JOptionPane.showMessageDialog(this, "Idioma modificado con exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    idiomaSeleccionadoId = -1;
                 }
             }
-            
+
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El porcentaje debe ser un numero válido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El porcentaje debe ser un número válido", "Error de Formato", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error al actualizar idioma: " + e.getMessage(), 
                                         "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnnEditarActionPerformed
-
-    private void BttnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttnConsultarActionPerformed
-        int filaSeleccionada = jTable1.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un idioma para consultar", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        try {
-            int idIdioma = (int) tablaIdiomasModel.getValueAt(filaSeleccionada, 0);
-            
-            IdiomaPais idiomaSeleccionado = idiomaDAO.obtenerIdiomaPorId(idIdioma);
-            
-            if (idiomaSeleccionado != null) {
-                txtIdioma.setText(idiomaSeleccionado.getIdioma());
-                txtPorcentaje.setText(String.valueOf(idiomaSeleccionado.getPorcentajeHablante()));
-                RbOficial.setSelected(idiomaSeleccionado.isEsOficial());
-            }
-            
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error al consultar idioma: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_BttnConsultarActionPerformed
 
     private void bttnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtrasActionPerformed
         this.dispose();
@@ -475,6 +435,35 @@ public class VistaIdioma extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtPorcentajeKeyTyped
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int fila = jTable1.getSelectedRow();
+        if (fila != -1) {
+            try {
+                this.idiomaSeleccionadoId = (int) tablaIdiomasModel.getValueAt(fila, 0); // ← GUARDAR ID
+
+                IdiomaPais idiomaSeleccionado = idiomaDAO.obtenerIdiomaPorId(idiomaSeleccionadoId);
+
+                if (idiomaSeleccionado != null) {
+                    txtIdioma.setText(idiomaSeleccionado.getIdioma());
+                    txtPorcentaje.setText(String.valueOf(idiomaSeleccionado.getPorcentajeHablante()));
+                    RbOficial.setSelected(idiomaSeleccionado.isEsOficial());
+
+                    Pais paisDelIdioma = obtenerPaisPorId(idiomaSeleccionado.getIdPais());
+                    if (paisDelIdioma != null) {
+                        cbPaises.setSelectedItem(paisDelIdioma);
+                    }
+                }
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar datos del idioma: " + e.getMessage(), 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+                logger.warning("Error al obtener idioma por ID: " + e.getMessage());
+            } catch (Exception e) {
+                logger.warning("Error inesperado: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -504,7 +493,6 @@ public class VistaIdioma extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnnAgregar;
     private javax.swing.JButton BtnnEditar;
-    private javax.swing.JButton BttnConsultar;
     private javax.swing.JRadioButton RbOficial;
     private javax.swing.JButton bttnAtras;
     private javax.swing.JComboBox<Modelo.Pais> cbPaises;
@@ -512,7 +500,6 @@ public class VistaIdioma extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;

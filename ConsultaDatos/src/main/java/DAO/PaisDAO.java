@@ -73,7 +73,7 @@ public class PaisDAO implements PaisCRUD {
     public int insertarPais(Pais pais) throws SQLException {
         String sql = "INSERT INTO paises (nombre, continente, region, superficie, " +
                     "anioIndependencia, poblacion, expectLife, pib, gobierno, " +
-                    "jefeGobierno, capital, codPais) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "jefeGobierno, codPais) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = Conn.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -93,7 +93,7 @@ public class PaisDAO implements PaisCRUD {
     public boolean actualizarPais(Pais pais) throws SQLException {
         String sql = "UPDATE paises SET nombre=?, continente=?, region=?, superficie=?, " +
                     "anioIndependencia=?, poblacion=?, expectLife=?, pib=?, gobierno=?, " +
-                    "jefeGobierno=?, capital=?, codPais=? WHERE id_pais=?";
+                    "jefeGobierno=?, codPais=? WHERE id_pais=?";
         
         try (Connection conn = Conn.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -129,7 +129,6 @@ public class PaisDAO implements PaisCRUD {
             rs.getFloat("pib"),
             rs.getString("gobierno"),
             rs.getString("jefeGobierno"),
-            rs.getString("capital"),
             rs.getString("codPais")
         );
     }
@@ -145,7 +144,6 @@ public class PaisDAO implements PaisCRUD {
         pstmt.setFloat(8, pais.getPib());
         pstmt.setString(9, pais.getGobierno());
         pstmt.setString(10, pais.getJefeGobierno());
-        pstmt.setString(11, pais.getCapital());
         pstmt.setString(12, pais.getCodPais());
     }
 }
